@@ -1,0 +1,6 @@
+id=zenku_frameprobe
+name=Zenku FrameProbe
+version=2.0
+versionCode=20
+author=Zenku
+description=Zygisk native C++ frame/fence observability probe for Android 13 arm64
