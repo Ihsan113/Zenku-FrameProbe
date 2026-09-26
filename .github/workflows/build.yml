@@ -1,0 +1,45 @@
+name: Build Zenku FrameProbe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package Magisk module
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          rm -f dist/Zenku-FrameProbe-v1.0.zip
+
+          cp module/module.prop module.prop
+          cp module/service.sh service.sh
+          chmod 755 service.sh
+
+          zip -r "dist/Zenku-FrameProbe-v1.0.zip" \
+            module.prop service.sh
+
+      - name: Validate ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -l dist/Zenku-FrameProbe-v1.0.zip
+          test -f dist/Zenku-FrameProbe-v1.0.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zenku-FrameProbe-v1.0
+          path: dist/Zenku-FrameProbe-v1.0.zip
+          if-no-files-found: error
