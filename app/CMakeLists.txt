@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(zenku_frameprobe)
+add_library(zenku_frameprobe SHARED native/frameprobe.cpp)
+target_include_directories(zenku_frameprobe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jni)
+find_library(log-lib log)
+find_library(dl-lib dl)
+find_library(android-lib android)
+target_link_libraries(zenku_frameprobe ${log-lib} ${dl-lib} ${android-lib})
