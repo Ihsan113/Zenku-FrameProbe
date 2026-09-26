@@ -1,47 +1,37 @@
-name: Build Zenku FrameProbe
-
+name: Build Zenku FrameProbe C++
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
-
-permissions:
-  contents: read
-
+    branches: [main]
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Package Magisk module
-        shell: bash
+      - uses: actions/checkout@v4
+      - uses: android-actions/setup-android@v3
+      - name: Install SDK and NDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.2.12479018" "cmake;3.22.1"
+      - name: Configure
+        run: cmake -S app -B build -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-29 -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release -j2
+      - name: Package
         run: |
           set -euo pipefail
-
-          mkdir -p dist
-          rm -f dist/Zenku-FrameProbe-v1.0.zip
-
-          test -f module.prop
-          test -f service.sh
-
-          zip -j -r "dist/Zenku-FrameProbe-v1.0.zip" module.prop service.sh
-
-      - name: Validate ZIP
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          unzip -l dist/Zenku-FrameProbe-v1.0.zip
-
-          test "$(unzip -p dist/Zenku-FrameProbe-v1.0.zip module.prop | grep -c '^id=zenku_frameprobe$')" -eq 1
-          test "$(unzip -p dist/Zenku-FrameProbe-v1.0.zip service.sh | grep -cF '[Zenku] FrameProbe')" -ge 1
-
+          SO="$(find build -type f -name 'libzenku_frameprobe.so' -print -quit)"
+          test -s "$SO"
+          rm -rf dist
+          mkdir -p dist/zenku_frameprobe/zygisk
+          cp "$SO" dist/zenku_frameprobe/zygisk/arm64-v8a.so
+          cp module/module.prop dist/zenku_frameprobe/module.prop
+          cp module/service.sh dist/zenku_frameprobe/service.sh
+          cp module/uninstall.sh dist/zenku_frameprobe/uninstall.sh
+          chmod 0755 dist/zenku_frameprobe/service.sh dist/zenku_frameprobe/uninstall.sh
+          cd dist
+          zip -r Zenku-FrameProbe-v2.0.zip zenku_frameprobe
+          unzip -t Zenku-FrameProbe-v2.0.zip
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Zenku-FrameProbe-v1.0
-          path: dist/Zenku-FrameProbe-v1.0.zip
-          if-no-files-found: error
+          name: Zenku-FrameProbe-v2.0
+          path: dist/Zenku-FrameProbe-v2.0.zip
