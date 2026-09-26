@@ -1,0 +1,6 @@
+id=zenku_frameprobe
+name=Zenku FrameProbe
+version=v1.0
+versionCode=1
+author=Zenku
+description=Reversible frame/fence observability probe for Android 13 arm64
