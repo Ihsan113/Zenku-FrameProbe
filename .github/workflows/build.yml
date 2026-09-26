@@ -36,11 +36,8 @@ jobs:
 
           unzip -l dist/Zenku-FrameProbe-v1.0.zip
 
-          unzip -p dist/Zenku-FrameProbe-v1.0.zip module.prop |
-            grep -q '^id=zenku_frameprobe$'
-
-          unzip -p dist/Zenku-FrameProbe-v1.0.zip service.sh |
-            grep -q 'Zenku FrameProbe'
+          test "$(unzip -p dist/Zenku-FrameProbe-v1.0.zip module.prop | grep -c '^id=zenku_frameprobe$')" -eq 1
+          test "$(unzip -p dist/Zenku-FrameProbe-v1.0.zip service.sh | grep -cF '[Zenku] FrameProbe')" -ge 1
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
