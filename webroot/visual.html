@@ -52,6 +52,16 @@
 <div class="v-row"><label for="highp">Highp FP32<small>Pending verifikasi presisi shader; bisa menambah beban GPU.</small></label><input type="checkbox" id="highp"></div>
 </fieldset>
 </section>
+<section class="v-card" aria-labelledby="preset-heading">
+<div class="v-flex"><h2 id="preset-heading">Profil Visual Gaming</h2><span class="v-tag">Preset cepat</span></div>
+<p>Pilih preset untuk mengisi semua kontrol di atas. Setelah itu tekan <b>Terapkan &amp; tutup game</b>. AAA++ menyalakan seluruh eksperimen; gunakan benchmark/offline dan setujui peringatannya.</p>
+<div class="v-buttons">
+<button type="button" id="preset-aaa" class="v-btn primary">AAA++ · Semua ON</button>
+<button type="button" id="preset-performance" class="v-btn">Performance</button>
+</div>
+<button type="button" id="preset-balance" class="v-btn" style="margin-top:8px">Balance · Rekomendasi</button>
+<p id="preset-summary" class="v-status" aria-live="polite">Belum ada preset dipilih.</p>
+</section>
 <section class="v-card">
 <h2>Terapkan sesi ini</h2>
 <p>Game target dan target lama yang dikenal akan ditutup agar properti dibaca saat proses berikutnya dimulai. Tidak reboot, tidak menyimpan profil visual ke cache. Buka game secara manual.</p>
