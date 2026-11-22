@@ -62,18 +62,18 @@ if ! command -v resetprop >/dev/null 2>&1; then
     exit 0
 fi
 
-# ZENKU R5.4.10 GAME-FIRST RAM POLICY | Android 13 / MT6789.
+# ZENKU R5.4.11 MODERATE RAM POLICY | Android 13 / MT6789.
 # AOSP LMKD PSI knobs, applied before framework startup and read back.
 # More sensitive partial-stall / page-cache thrashing thresholds can trigger
 # earlier background-process cleanup under pressure; they do not reserve RAM.
 # No ZRAM size/algorithm, swappiness, VM sysctls, DVFSRC, clocks or thermal writes.
 apply_prop ro.lmk.use_psi true
 apply_prop ro.lmk.use_minfree_levels false
-apply_prop ro.lmk.psi_partial_stall_ms 55
+apply_prop ro.lmk.psi_partial_stall_ms 70
 apply_prop ro.lmk.psi_complete_stall_ms 700
-apply_prop ro.lmk.thrashing_limit 80
-apply_prop ro.lmk.thrashing_limit_decay 50
-apply_prop ro.lmk.swap_free_low_percentage 25
+apply_prop ro.lmk.thrashing_limit 100
+apply_prop ro.lmk.thrashing_limit_decay 10
+apply_prop ro.lmk.swap_free_low_percentage 20
 apply_prop ro.lmk.kill_heaviest_task true
 apply_prop ro.lmk.kill_timeout_ms 100
 
