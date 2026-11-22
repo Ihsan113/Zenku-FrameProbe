@@ -10,6 +10,12 @@ sys.use_fifo_ui=1
 ro.hwui.use_vulkan=1
 renderthread.skia.reduceopstasksplitting=true
 
+# SurfaceFlinger blur hint (AOSP Android 13).
+# When supported system blur layers are actually rendered, CompositionEngine
+# may request higher GPU clocks. This does not enable unsupported blur and
+# does not accelerate ordinary in-game 3D effects or asset streaming.
+ro.sf.blurs_are_expensive=1
+
 # HWUI partial rendering and power hints (AOSP Properties.h / Properties.cpp).
 debug.hwui.use_buffer_age=true
 debug.hwui.use_partial_updates=true
