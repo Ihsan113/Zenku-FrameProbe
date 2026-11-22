@@ -15,61 +15,55 @@
 </head>
 <body>
 <main class="visual-page">
-<header><div class="eyebrow">ZENKU / R4.1 NATIVE MALI</div><h1>Visual Gaming</h1><p>Kontrol driver per aplikasi · Mali-G57 MC2 · MT6789</p></header>
+<header><div class="eyebrow">ZENKU / R5.4.14 VERIFIED GPUD FILTER</div><h1>Visual Gaming</h1><p>Kontrol tekstur per aplikasi · Mali-G57 MC2 · MT6789</p></header>
 <section class="v-card" aria-labelledby="live-heading">
 <div class="v-flex"><h2 id="live-heading">Status properti</h2><span id="compat" class="v-tag">Memeriksa</span></div>
-<div class="v-metrics"><div class="v-metric"><small>GPUD</small><strong id="live-gpud">—</strong></div><div class="v-metric"><small>Target</small><strong id="live-target">—</strong></div><div class="v-metric"><small>AF / Filter</small><strong id="live-filter">—</strong></div><div class="v-metric"><small>Picture mode</small><strong id="live-pq">—</strong></div></div>
+<div class="v-metrics"><div class="v-metric"><small>GPUD</small><strong id="live-gpud">—</strong></div><div class="v-metric"><small>Target</small><strong id="live-target">—</strong></div><div class="v-metric"><small>AF / Texture filter</small><strong id="live-filter">—</strong></div><div class="v-metric"><small>Picture mode</small><strong id="live-pq">—</strong></div></div>
 <p>Ini hasil pembacaan properti, bukan jaminan override GPU aktif dalam game.</p><details><summary>Getprop aktual (texture &amp; sampler)</summary><pre id="raw-props" class="v-raw">—</pre></details>
 <div id="message" class="v-status" role="status" aria-live="polite">Menghubungkan WebUI...</div>
 <button id="refresh" class="v-btn" style="margin-top:10px">Refresh status</button>
 </section>
 <section class="v-card" aria-labelledby="profile-heading">
-<div class="v-flex"><h2 id="profile-heading">Profil tekstur</h2><span class="v-tag v-good">Teruji GLES</span></div>
+<div class="v-flex"><h2 id="profile-heading">Profil tekstur &amp; filtering</h2><span class="v-tag v-good">GL state teruji</span></div>
 <fieldset id="profile" disabled>
 <label class="v-label" for="target">Target aplikasi</label>
 <select id="target"><option value="">Memuat aplikasi terpasang...</option></select>
-<p class="za-page-note">Daftar aplikasi terpasang dari Android. Ikon &amp; nama diambil dari KernelSU jika tersedia.</p>
+<p class="za-page-note">Pilih aplikasi terpasang. Kontrol GPUD hanya diarahkan ke package ini.</p>
 <button type="button" id="visual-refresh-apps" class="v-btn" style="margin-top:8px">↻ Refresh aplikasi</button>
-<div class="v-label">Anisotropic filtering</div>
+<div class="v-label">Anisotropic filtering (AF)</div>
 <div class="v-options" role="radiogroup" aria-label="Anisotropic filtering">
-<input type="radio" name="af" value="off" id="af0"><label for="af0">Native</label>
-<input type="radio" name="af" value="2.0" id="af2"><label for="af2">2×</label>
-<input type="radio" name="af" value="4.0" id="af4" checked><label for="af4">4×</label>
-<input type="radio" name="af" value="8.0" id="af8"><label for="af8">8×</label>
+<input type="radio" name="af" value="off" id="af0" checked><label for="af0">Native</label>
+<input type="radio" name="af" value="4.0" id="af4"><label for="af4">4×</label>
 <input type="radio" name="af" value="16.0" id="af16"><label for="af16">16×</label>
 </div>
-<p>4× = rekomendasi awal. 16× didukung GPU, tetapi lebih berat. Ini override panggilan AF yang sudah ada, bukan penambah otomatis pada semua tekstur.</p>
-<div class="v-row"><label for="tri">Trilinear filtering<small>Override filter mipmap yang cocok.</small></label><input type="checkbox" id="tri" checked></div>
-<div class="v-row"><label for="aosp">MSAA AOSP 4×<small>Global; terutama konfigurasi EGL ES2.</small></label><input type="checkbox" id="aosp" checked></div>
-</fieldset>
-</section>
-<section class="v-card" aria-labelledby="advanced-heading">
-<div class="v-flex"><h2 id="advanced-heading">Eksperimen driver</h2><span class="v-tag v-warn">Opsional</span></div>
-<p class="v-caution">Default OFF. Belum lolos pengujian game. Coba satu per satu, idealnya di benchmark offline.</p>
-<fieldset id="advanced" disabled>
-<div class="v-row"><label for="rgb">Force RGBA8888<small>Mengubah pilihan EGL; belum meningkatkan buffer yang sudah 8-bit.</small></label><input type="checkbox" id="rgb"></div>
-<div class="v-row"><label for="native">Native Mali MSAA 4×<small>Eksperimental: template EGL offscreen teruji; window/ES3 belum. Dapat gagal memilih config.</small></label><input type="checkbox" id="native"></div>
-<div class="v-row"><label for="highp">Highp FP32<small>Pending verifikasi presisi shader; bisa menambah beban GPU.</small></label><input type="checkbox" id="highp"></div>
+<p>AF 4× dan 16× terbaca kembali pada texture dan sampler hook, tanpa GL error pada probe. 4× dipakai sebagai default seimbang; 16× dapat memperbaiki detail tekstur pada sudut miring, tetapi dampak FPS game belum diukur.</p>
+<label class="v-label" for="filter-mode">Mode texture filter</label>
+<select id="filter-mode">
+<option value="trilinear">Trilinear · texture + sampler MIN</option>
+<option value="split">Combined Split · texture MIN + sampler MAG</option>
+<option value="mag">Linear MAG · texture + sampler MAG</option>
+<option value="native">Native · tanpa override filter</option>
+</select>
+<p>Semua mode filter berhasil dibaca ulang pada probe. Setiap hook menyediakan satu pasangan pname/value; mode Split membagi MIN trilinear ke texture hook dan MAG linear ke sampler hook, bukan memaksa dua filter pada objek sampler yang sama.</p>
 </fieldset>
 </section>
 <section class="v-card" aria-labelledby="preset-heading">
-<div class="v-flex"><h2 id="preset-heading">Profil Visual Gaming</h2><span class="v-tag">Preset cepat</span></div>
-<p>Pilih preset untuk mengisi semua kontrol di atas. Setelah itu tekan <b>Terapkan &amp; tutup game</b>. AAA++ menyalakan seluruh eksperimen; gunakan benchmark/offline dan setujui peringatannya.</p>
+<div class="v-flex"><h2 id="preset-heading">Profil Visual Gaming</h2><span class="v-tag">Preset tekstur</span></div>
+<p>Pilih preset untuk mengisi kontrol. Preset hanya memakai AF dan filter yang sudah lolos readback pada probe.</p>
 <div class="v-buttons">
-<button type="button" id="preset-aaa" class="v-btn primary">AAA++ · Semua ON</button>
-<button type="button" id="preset-performance" class="v-btn">Performance</button>
+<button type="button" id="preset-detail" class="v-btn primary">High Detail · AF 16×</button>
+<button type="button" id="preset-balance" class="v-btn">Balance · AF 4×</button>
 </div>
-<button type="button" id="preset-balance" class="v-btn" style="margin-top:8px">Balance · Rekomendasi</button>
+<button type="button" id="preset-native" class="v-btn" style="margin-top:8px">Native · tanpa override</button>
 <p id="preset-summary" class="v-status" aria-live="polite">Belum ada preset dipilih.</p>
 </section>
 <section class="v-card">
-<h2>Terapkan sesi ini</h2>
-<p>Game target dan target lama yang dikenal akan ditutup agar properti dibaca saat proses berikutnya dimulai. Tidak reboot, tidak menyimpan profil visual ke cache. Buka game secara manual.</p>
-<p class="v-caution">Kompatibilitas anti-cheat belum diketahui. Uji di benchmark atau offline; jangan gunakan saat pertandingan berlangsung.</p>
-<label id="consent-row" class="v-consent" hidden><input type="checkbox" id="consent"> Saya memahami risiko eksperimen driver dan akan menguji di benchmark/offline.</label>
+<h2>Terapkan profil</h2>
+<p>Profil bersifat sesi saja dan tidak disimpan ke cache. Saat diterapkan, target akan di-force-stop agar konfigurasi dibaca pada proses GL berikutnya. Buka game kembali secara manual.</p>
+<p class="v-caution">Uji probe membuktikan perubahan GL state pada proses pengujian, bukan bukti efek visual atau FPS langsung di Mobile Legends. Kompatibilitas anti-cheat game online belum diketahui.</p>
 <button id="apply" class="v-btn primary" style="margin-top:12px" disabled>Terapkan &amp; tutup game</button>
-<div class="v-buttons"><button id="defaults" class="v-btn" disabled>Isi profil R4</button><button id="off" class="v-btn" disabled>Matikan native</button></div>
-<p>Matikan native mengembalikan GPUD dan Highp ke OFF; MSAA AOSP kembali ON. Reboot selalu memuat default R4 (MLBB, AF 4×, trilinear), bukan perubahan sesi.</p>
+<div class="v-buttons"><button id="defaults" class="v-btn" disabled>Isi profil Balance</button><button id="off" class="v-btn" disabled>Matikan GPUD filter</button></div>
+<p>Default boot tetap AF 4× + Trilinear. Matikan GPUD filter menghapus override AF/filter dan menonaktifkan permintaan Highp, RGBA paksa, serta MSAA global dari versi lama.</p>
 </section>
 <section class="v-card" aria-labelledby="renderer-heading">
 <div class="v-flex"><h2 id="renderer-heading">Advanced GPU Renderer APIs</h2><span class="v-tag v-good" id="renderer-fingerprint">Memeriksa driver</span></div>
@@ -98,6 +92,6 @@
 </main>
 <footer class="footer-nav"><a href="index.html" class="nav-button"><img src="battery.svg" alt=""><span>Battery</span></a><a href="gpu.html" class="nav-button"><img src="gpu.svg" alt=""><span>GPU</span></a><a href="gpu_plus.html" class="nav-button"><img src="gpu-plus.svg" alt=""><span>GPU+</span></a><a href="visual.html" class="nav-button active" aria-current="page"><img src="visual.svg" alt=""><span>Visual</span></a><a href="phase.html" class="nav-button"><img src="phase.svg" alt=""><span>Pacing</span></a></footer>
 <script src="app_picker.js"></script>
-<script src="visual.js?v=4.2"></script>
+<script src="visual.js?v=5.0"></script>
 <script src="renderer_caps.js?v=1.0"></script>
 </body></html>

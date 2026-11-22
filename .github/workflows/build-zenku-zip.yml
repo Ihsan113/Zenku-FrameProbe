@@ -1,4 +1,4 @@
-name: Build ZENKU Magisk ZIP R5.4.13 RAM MODERATE
+name: Build ZENKU Magisk ZIP R5.4.14 GPUD FILTER
 
 on:
   push:
@@ -35,10 +35,109 @@ jobs:
           bash -n phase_tuner.sh
           bash -n surfaceflinger_opt.sh
           bash -n visual_tuner.sh
+          node --check webroot/visual.js
           bash -n renderer_capabilities.sh
           bash -n "$RUNNER_TEMP/gpud-lab-v2/gpud_batch_v2.sh"
           cc -std=c11 -O2 -Wall -Wextra -Werror -fsyntax-only "$RUNNER_TEMP/gpud-lab-v2/gpud_probe.c"
-          grep -q '^versionCode=22$' module.prop
+          grep -q '^versionCode=23
+          grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
+          grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
+      - name: Build flashable ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME=ZENKU_R5.4.14_GPUD_FILTER.zip
+          zip -qr "$ZIP_NAME" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
+          unzip -t "$ZIP_NAME"
+          sha256sum "$ZIP_NAME"
+      - name: Upload flashable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-R5.4.14-GPUD-FILTER
+          path: ZENKU_R5.4.13_RAM_MODERATE.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stage standalone GPUD lab ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip .
+          unzip -t ZENKU_GPUD_BATCH_LAB_V2.zip
+          sha256sum ZENKU_GPUD_BATCH_LAB_V2.zip
+      - name: Upload standalone GPUD lab
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-GPUD-BATCH-LAB-V2
+          path: ZENKU_GPUD_BATCH_LAB_V2.zip
+          if-no-files-found: error
+          retention-days: 30
+ module.prop
+          grep -q '^debug.egl.force_msaa=false
+          grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
+          grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
+      - name: Build flashable ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME=ZENKU_R5.4.13_RAM_MODERATE.zip
+          zip -qr "$ZIP_NAME" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
+          unzip -t "$ZIP_NAME"
+          sha256sum "$ZIP_NAME"
+      - name: Upload flashable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-R5.4.13-RAM-MODERATE
+          path: ZENKU_R5.4.13_RAM_MODERATE.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stage standalone GPUD lab ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip .
+          unzip -t ZENKU_GPUD_BATCH_LAB_V2.zip
+          sha256sum ZENKU_GPUD_BATCH_LAB_V2.zip
+      - name: Upload standalone GPUD lab
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-GPUD-BATCH-LAB-V2
+          path: ZENKU_GPUD_BATCH_LAB_V2.zip
+          if-no-files-found: error
+          retention-days: 30
+ system.prop
+          grep -q '^debug.gpu.force.highp=0
+          grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
+          grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
+      - name: Build flashable ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME=ZENKU_R5.4.13_RAM_MODERATE.zip
+          zip -qr "$ZIP_NAME" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
+          unzip -t "$ZIP_NAME"
+          sha256sum "$ZIP_NAME"
+      - name: Upload flashable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-R5.4.13-RAM-MODERATE
+          path: ZENKU_R5.4.13_RAM_MODERATE.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stage standalone GPUD lab ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip .
+          unzip -t ZENKU_GPUD_BATCH_LAB_V2.zip
+          sha256sum ZENKU_GPUD_BATCH_LAB_V2.zip
+      - name: Upload standalone GPUD lab
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-GPUD-BATCH-LAB-V2
+          path: ZENKU_GPUD_BATCH_LAB_V2.zip
+          if-no-files-found: error
+          retention-days: 30
+ system.prop
           grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
           grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
       - name: Build flashable ZIP
