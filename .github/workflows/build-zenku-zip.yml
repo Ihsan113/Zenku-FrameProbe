@@ -20,7 +20,8 @@ jobs:
           test -s module.prop
           test -s META-INF/com/google/android/update-binary
           test -s customize.sh
-          test -s renderer_capabilities.sh\n          test -s webroot/visual.js
+          test -s renderer_capabilities.sh
+          test -s webroot/visual.js
           test -s webroot/visual.html
           test -s webroot/renderer_caps.js
           bash -n customize.sh
