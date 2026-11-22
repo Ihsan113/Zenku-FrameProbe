@@ -1,0 +1,48 @@
+name: Build ZENKU Magisk ZIP
+
+on:
+  push:
+    branches:
+      - feature/gpu-renderer-capability-panel
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Validate module files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s module.prop
+          test -s META-INF/com/google/android/update-binary
+          test -s customize.sh
+          test -s renderer_capabilities.sh
+          test -s webroot/visual.html
+          test -s webroot/renderer_caps.js
+          bash -n customize.sh
+          bash -n renderer_capabilities.sh
+          grep -q 'renderer_capabilities.sh' customize.sh
+          grep -q 'renderer_caps.js' webroot/visual.html
+      - name: Package installable module
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/zenku-package
+          tar --exclude='.git' --exclude='.github' -cf - . | tar -xf - -C /tmp/zenku-package
+          VERSION="$(sed -n 's/^version=//p' module.prop | head -n1)"
+          ZIP_NAME="ZENKU_R5.4.8_GPU_RENDERER_API.zip"
+          cd /tmp/zenku-package
+          zip -qr "$GITHUB_WORKSPACE/$ZIP_NAME" .
+          unzip -t "$GITHUB_WORKSPACE/$ZIP_NAME"
+          echo "Built $ZIP_NAME ($VERSION)"
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZENKU-R5.4.8-GPU-RENDERER-API
+          path: ZENKU_R5.4.8_GPU_RENDERER_API.zip
+          if-no-files-found: error
+          retention-days: 14
