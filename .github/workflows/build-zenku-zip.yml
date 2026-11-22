@@ -44,6 +44,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ZENKU-R5.4.10-RAM-GAME-FIRST
-          path: ZENKU_R5.4.9_VISUAL_PRESETS.zip
+          path: ZENKU_R5.4.10_RAM_GAME_FIRST.zip
           if-no-files-found: error
           retention-days: 14
