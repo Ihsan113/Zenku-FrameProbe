@@ -53,9 +53,14 @@ persist.sys.overlay.devinputjack=true
 # Audio quality: service.sh may subsequently override this based on saved config.
 af.resampler.quality=4
 
-# Display-only dithering request. Not a GPU/performance boost; has an effect
-# only when the active framework/vendor display stack consumes this property.
+# Global visual / framework property requests.
+# These are declared in system.prop and are NOT controlled by AAA++, Performance or Balance.
+# Dithering is a display-quality request, not a GPU/performance boost.
+# The framework/vendor display stack must consume the property for a visible effect.
 persist.sys.use_dithering=1
+# Legacy purgeable-assets request. Modern Android/app implementations may ignore it;
+# its presence does not guarantee reclaimed RAM or improved performance.
+persist.sys.purgeable_assets=1
 
 # Preserve app-facing Realme identity intent; do not spoof the hardware board.
 ro.product.model=RMX5070
