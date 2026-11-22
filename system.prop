@@ -1,0 +1,72 @@
+# ZENKU AAA+++ R4 VISUAL EDITION | Android 13 / MT6789 / 60-90 Hz
+# Static policy. Early graphics and scheduling are applied in post-fs-data.sh.
+# No invented HDR capability, color primaries, GPU frequency or hardware limits.
+# MTK PQ and display compression are capability-gated in post-fs-data.sh.
+
+# Framework performance (AOSP; FIFO UI requires kernel support).
+sys.use_fifo_ui=1
+
+# HWUI: preserve intentional Vulkan preference; debug renderer takes precedence.
+ro.hwui.use_vulkan=1
+renderthread.skia.reduceopstasksplitting=true
+
+# HWUI partial rendering and power hints (AOSP Properties.h / Properties.cpp).
+debug.hwui.use_buffer_age=true
+debug.hwui.use_partial_updates=true
+debug.hwui.skip_empty_damage=true
+debug.hwui.use_gpu_pixel_buffers=true
+debug.hwui.use_hint_manager=true
+debug.hwui.target_cpu_time_percent=65
+debug.hwui.skia_atrace_enabled=false
+
+# Native quality: actual EGL 4x MSAA switch (ES2 configurations where supported).
+# This is deliberately aggressive; GPU-bound games may lose FPS.
+debug.egl.force_msaa=true
+
+# ART / app responsiveness (AOSP 13; rock device tree uses speed-profile).
+# Enable normal JIT and profiles, compile hot app paths during install/idle jobs.
+# SystemUI full AOT candidate: extra storage / compilation time, no FPS guarantee.
+dalvik.vm.usejit=true
+dalvik.vm.usejitprofiles=true
+pm.dexopt.install=speed-profile
+pm.dexopt.bg-dexopt=speed-profile
+dalvik.vm.systemuicompilerfilter=speed
+# Keep startup string resolution and compiler swap support (AOSP defaults).
+dalvik.vm.dex2oat-resolve-startup-strings=true
+dalvik.vm.dex2oat-swap=true
+
+# Android 13 LMKD: use PSI/thrashing policy instead of legacy minfree-level kills.
+# These tune eligible-task selection, post-kill spacing and thrashing decay.
+# They do not change swap/zRAM size, OOM adjustment scores or CPU/GPU clocks.
+ro.lmk.use_minfree_levels=false
+ro.lmk.kill_heaviest_task=true
+ro.lmk.kill_timeout_ms=100
+ro.lmk.thrashing_limit_decay=50
+
+# GameManager: disable the framework default FPS override when this framework feature exists.
+# This does not unlock a game's own FPS cap or force a target refresh rate.
+debug.graphics.game_default_frame_rate.disabled=true
+
+# PHH GSI: use /dev/input headset jack detection when supported.
+persist.sys.overlay.devinputjack=true
+
+# Audio quality: service.sh may subsequently override this based on saved config.
+af.resampler.quality=4
+
+# Preserve app-facing Realme identity intent; do not spoof the hardware board.
+ro.product.model=RMX5070
+ro.product.odm.model=RMX5070
+ro.product.system.model=RMX5070
+ro.product.system_ext.model=RMX5070
+ro.product.vendor.model=RMX5070
+ro.product.device=RMX5070
+ro.product.product.device=RMX5070
+ro.product.name=RMX5070
+ro.product.vendor.manufacturer=realme
+ro.product.manufacturer=realme
+ro.product.brand=realme
+
+# R4: native GPUD AF 4x + trilinear is configured in post-fs-data.sh
+# only for MLBB and the analyzed libgpud build. No global override.
+# Native EGL/MSAA, RGBA8888 and Highp are OFF at boot; optional per-app WebUI experiments.
+# Vendor Vivid mode requested at boot on the verified PQ HAL. No visual cache.

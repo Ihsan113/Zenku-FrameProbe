@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>GPU Frequency Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="app_picker.css">
+    <style>
+        /* GPU page-specific overrides */
+        body {
+            padding-bottom: 100px;
+        }
+
+        .container {
+            background: transparent;
+            padding: 0 0 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            color: var(--text-primary, #fff);
+            text-align: center;
+            margin: 1.5rem 0 0.5rem;
+            font-size: 1.3em;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px var(--rog-red-glow, rgba(228,0,15,0.6));
+        }
+        h1::before { content: '⬡ '; color: var(--rog-red, #E4000F); font-size: 0.7em; }
+
+        /* HUD divider */
+        .hud-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--rog-red, #E4000F) 40%, var(--rog-red, #E4000F) 60%, transparent);
+            margin: 0.3rem 1rem 1.2rem;
+            opacity: 0.5;
+        }
+
+        /* Section title — ROG style */
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            color: var(--rog-red, #E4000F);
+            font-size: 0.65em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 1.4rem 1rem 0.5rem;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(228, 0, 15, 0.3);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -1px;
+            width: 30px; height: 1px;
+            background: var(--rog-red, #E4000F);
+            box-shadow: 0 0 6px var(--rog-red-glow, rgba(228,0,15,0.6));
+        }
+
+        /* Status display */
+        #status {
+            text-align: center;
+            margin: 0.5rem 1rem 0;
+            font-weight: 600;
+            font-size: 0.88em;
+            padding: 12px 16px;
+            border-radius: 2px;
+            background-color: var(--bg-elevated, #161616);
+            color: var(--text-primary, #fff);
+            border: 1px solid var(--border-default, #222);
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            animation-fill-mode: forwards;
+        }
+
+        #status.animate-pop {
+            animation: statusPop 0.4s ease-out;
+        }
+        #status.animate-blink {
+            animation: statusBlink 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes statusPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); box-shadow: 0 0 16px var(--rog-red-glow, rgba(228,0,15,0.4)); }
+            100% { transform: scale(1); }
+        }
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Current status info block */
+        #currentStatus {
+            margin: 0.5rem 1rem 0;
+            padding: 14px 16px;
+            border-radius: 2px;
+            background-color: var(--bg-elevated, #161616);
+            border: 1px solid var(--border-default, #222);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.82em;
+            line-height: 1.9;
+            color: var(--text-primary, #fff);
+            position: relative;
+        }
+        /* left accent */
+        #currentStatus::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--rog-red, #E4000F);
+            opacity: 0.6;
+        }
+        #currentStatus strong {
+            color: var(--text-secondary, #888);
+            font-weight: 400;
+            display: inline-block;
+            min-width: 100px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        /* Select elements inside gpu page */
+        .gpu-select-wrap {
+            padding: 0 1rem;
+        }
+        .gpu-select-wrap select {
+            width: 100%;
+            padding: 11px 14px;
+            margin-top: 6px;
+            margin-bottom: 10px;
+            border-radius: 2px;
+            border: 1px solid var(--border-default, #222);
+            background-color: var(--bg-input, #0F0F0F);
+            color: var(--text-primary, #fff);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95em;
+            font-weight: 500;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23E4000F" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .gpu-select-wrap select:focus {
+            outline: none;
+            border-color: var(--rog-red, #E4000F);
+            box-shadow: 0 0 8px rgba(228, 0, 15, 0.4);
+        }
+        .gpu-select-wrap select:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Action buttons */
+        .action-button {
+            width: calc(100% - 2rem);
+            margin: 4px 1rem;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 2px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: block;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+        .action-button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
+        .action-button.primary {
+            background: linear-gradient(135deg, var(--rog-red, #E4000F), #AA0008);
+            color: white;
+            box-shadow: 0 0 12px rgba(228, 0, 15, 0.3);
+        }
+        .action-button.primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #FF1F2F, var(--rog-red, #E4000F));
+            box-shadow: 0 0 22px rgba(228, 0, 15, 0.6);
+        }
+        .action-button.secondary {
+            background: transparent;
+            color: var(--rog-red, #E4000F);
+            border: 1px solid rgba(228, 0, 15, 0.4);
+        }
+        .action-button.secondary:hover:not(:disabled) {
+            border-color: var(--rog-red, #E4000F);
+            box-shadow: 0 0 10px rgba(228, 0, 15, 0.3);
+            background: rgba(228, 0, 15, 0.05);
+        }
+        .action-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        /* Setting item row */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 1rem;
+            border-bottom: 1px solid var(--border-subtle, #1A1A1A);
+        }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-item label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-secondary, #888);
+            flex-grow: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .setting-item select {
+            width: 48%;
+            padding: 8px 10px;
+            border-radius: 2px;
+            border: 1px solid var(--border-default, #222);
+            background-color: var(--bg-input, #0F0F0F);
+            color: var(--text-primary, #fff);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.88em;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23E4000F" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 15px;
+            cursor: pointer;
+        }
+        .setting-item select:focus {
+            outline: none;
+            border-color: var(--rog-red, #E4000F);
+        }
+
+        /* Buttons group */
+        .action-buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .action-buttons-group.single-column { flex-direction: column; }
+        .action-buttons-group .action-button { width: calc(100% - 2rem); }
+
+        /* Card-like block for sections */
+        .section-block {
+            background: var(--bg-card, #0D0D0D);
+            border: 1px solid var(--border-default, #222);
+            border-radius: 4px;
+            margin: 0 1rem 1rem;
+            padding-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .section-block::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 12px; height: 12px;
+            border-top: 2px solid var(--rog-red, #E4000F);
+            border-left: 2px solid var(--rog-red, #E4000F);
+        }
+        .section-block::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 12px; height: 12px;
+            border-bottom: 2px solid var(--rog-red, #E4000F);
+            border-right: 2px solid var(--rog-red, #E4000F);
+        }
+
+        /* Log monitor */
+        #logMonitor {
+            margin: 0 1rem 1rem;
+            padding: 14px 16px;
+            border-radius: 2px;
+            background-color: var(--log-bg, #060606);
+            border: 1px solid var(--border-default, #222);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.78em;
+            max-height: 260px;
+            overflow-y: auto;
+            color: #555555;
+            line-height: 1.6;
+            scrollbar-width: thin;
+            scrollbar-color: var(--rog-red, #E4000F) transparent;
+        }
+        #logMonitor::-webkit-scrollbar { width: 3px; }
+        #logMonitor::-webkit-scrollbar-thumb { background: var(--rog-red, #E4000F); }
+
+        #logMonitor .log-entry {
+            border-bottom: 1px solid var(--border-subtle, #1A1A1A);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+        #logMonitor .log-entry:last-child { border-bottom: none; margin-bottom: 0; }
+        #logMonitor .log-time {
+            font-size: 0.78em;
+            color: #333333;
+            display: block;
+            margin-bottom: 3px;
+        }
+        #logMonitor .log-message { font-weight: 400; color: #666666; }
+        #logMonitor .log-instruction {
+            font-size: 0.82em;
+            color: var(--rog-cyan, #00D4FF);
+            margin-top: 3px;
+            display: block;
+            font-style: italic;
+        }
+
+        @media (max-width: 400px) {
+            .setting-item { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .setting-item select { width: 100%; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GPU Frequency Manager</h1>
+        <div class="hud-divider"></div>
+
+        <div id="status">Memuat...</div>
+
+        <div class="section-title">⬡ Current Status</div>
+        <div id="currentStatus">Memuat status GPU &amp; Rendering...</div>
+
+        <div class="section-title">⬡ Fixed Frequencies</div>
+        <div class="section-block">
+            <div class="gpu-select-wrap">
+                <select id="fixedFreqSelect" disabled>
+                    <option value="" disabled selected>Memuat frekuensi tetap...</option>
+                </select>
+            </div>
+            <button id="applyFixedFreqButton" class="action-button primary" disabled>Terapkan Frekuensi Tetap</button>
+            <button id="resetFixedFreqButton" class="action-button secondary" data-freq-mode="reset">Reset ke Default</button>
+        </div>
+
+        <div class="section-title">⬡ Custom Frequencies (OPP Table)</div>
+        <div class="section-block">
+            <div class="gpu-select-wrap">
+                <select id="customFreqSelect" disabled>
+                    <option value="" disabled selected>Memuat frekuensi...</option>
+                </select>
+            </div>
+            <button id="applyCustomFreqButton" class="action-button primary" disabled>Terapkan Frekuensi Kustom</button>
+        </div>
+
+        <div class="section-title">⬡ Rendering Backend</div>
+        <div class="section-block">
+            <div class="setting-item">
+                <label>Kombo Cepat</label>
+                <div class="action-buttons-group">
+                    <button id="presetFullVulkanBtn" class="action-button secondary" type="button">⚡ Full Vulkan</button>
+                    <button id="presetFullGlBtn" class="action-button secondary" type="button">🛡️ Stabil (OpenGL)</button>
+                    <button id="presetResetBtn" class="action-button secondary" type="button">↩️ Reset Semua</button>
+                </div>
+                <p style="font-size:12px; opacity:0.7; margin-top:6px;">
+                    Full Vulkan = HWUI SkiaVulkan + RenderEngine SkiaVulkan Threaded.
+                    Stabil (OpenGL) = HWUI SkiaGL + RenderEngine SkiaGL Threaded.
+                    ANGLE per-app diatur terpisah dan tidak diubah oleh preset ini.
+                </p>
+            </div>
+            <div class="setting-item">
+                <label for="hwuiRendererSelect">HWUI Renderer</label>
+                <select id="hwuiRendererSelect">
+                    <option value="default">Default (Reset)</option>
+                    <option value="skiagl">SkiaGL (OpenGL ES)</option>
+                    <option value="skiavk">SkiaVulkan (Vulkan)</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label for="renderengineBackendSelect">RenderEngine</label>
+                <select id="renderengineBackendSelect">
+                    <option value="default">Default (Reset)</option>
+                    <option value="skiagl">SkiaGL</option>
+                    <option value="skiaglthreaded">SkiaGL Threaded</option>
+                    <option value="skiavk">SkiaVulkan</option>
+                    <option value="skiavkthreaded">SkiaVulkan Threaded</option>
+                </select>
+            </div>
+            <div class="action-buttons-group" style="margin-top:10px;">
+                <button id="applyRenderingSettingsButton" class="action-button primary">Terapkan Pengaturan Rendering</button>
+                <button id="resetRenderingSettingsButton" class="action-button secondary">Reset Rendering ke Default</button>
+            </div>
+        </div>
+
+        <div class="section-title">🎮 Per-App Rendering (ANGLE)</div>
+        <div class="section-block">
+            <div class="setting-item">
+                <label for="perAppPackageSelect">Aplikasi / Game</label>
+                <select id="perAppPackageSelect">
+                    <option value="">-- Ambil daftar aplikasi dulu --</option>
+                </select>
+                <p class="za-page-note">Pilih dari ikon dan nama aplikasi. Package tetap terlihat kecil untuk verifikasi.</p>
+                <button id="refreshAppListButton" class="action-button secondary" type="button" style="margin-top:8px;">↻ Refresh Aplikasi</button>
+            </div>
+            <div class="setting-item">
+                <label for="perAppDriverSelect">Driver</label>
+                <select id="perAppDriverSelect">
+                    <option value="native">Native (driver GPU bawaan)</option>
+                    <option value="angle">ANGLE</option>
+                    <option value="default">Default (hapus override, serahkan ke sistem)</option>
+                </select>
+            </div>
+            <div class="action-buttons-group">
+                <button id="applyPerAppButton" class="action-button primary" type="button" disabled>Terapkan ke App Ini</button>
+            </div>
+            <p style="font-size:12px; opacity:0.7; margin-top:8px; line-height:1.5;">
+                Setting ini per-package melalui Settings.Global dan persisten setelah reboot. Nilai mengikuti selector AOSP: <code>angle</code>, <code>native</code>, atau <code>default</code>.
+            </p>
+            <div class="setting-item">
+                <label>Override Aktif Saat Ini</label>
+                <div id="perAppOverrideList" style="font-size:12px; margin-top:4px;">Memuat...</div>
+            </div>
+        </div>
+
+        <div class="section-title">⬡ FPSGO Tweak <span style="color:#555;font-size:0.8em;">(Experimental)</span></div>
+        <div class="section-block">
+            <div class="action-buttons-group single-column" style="margin-top:10px;">
+                <button id="applyFpsgoOptimizationsButton" class="action-button primary">Terapkan Optimasi FPSGO</button>
+                <button id="resetFpsgoDefaultsButton" class="action-button secondary">Reset FPSGO ke Default</button>
+            </div>
+        </div>
+
+        <div class="section-title">⬡ VCore DVFS &amp; GPU DVFS <span style="color:#555;font-size:0.8em;">(MTK)</span></div>
+        <div class="section-block">
+            <div class="action-buttons-group single-column" style="margin-top:10px;">
+                <button id="applyVcoreGpuBoostingButton" class="action-button primary">Aktifkan Peningkatan VCore &amp; GPU</button>
+                <button id="resetVcoreGpuDvfsButton" class="action-button secondary">Reset VCore &amp; GPU DVFS</button>
+            </div>
+        </div>
+
+        <div class="section-title">⬡ DVFSRC Memory Tuning <span style="color:#555;font-size:0.8em;">(MTK)</span></div>
+        <div class="section-block">
+            <div class="setting-item">
+                <label for="dvfsrcGovernorSelect">Memory Governor</label>
+                <select id="dvfsrcGovernorSelect" disabled>
+                    <option value="default" selected>Loading...</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label for="dvfsrcMinFreqSelect">Min Frequency</label>
+                <select id="dvfsrcMinFreqSelect" disabled>
+                    <option value="default" selected>Loading...</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label for="dvfsrcMaxFreqSelect">Max Frequency</label>
+                <select id="dvfsrcMaxFreqSelect" disabled>
+                    <option value="default" selected>Loading...</option>
+                </select>
+            </div>
+            <div class="action-buttons-group single-column" style="margin-top:10px;">
+                <button id="applyDvfsrcSettingsButton" class="action-button primary" disabled>Apply Memory Tuning</button>
+                <button id="resetDvfsrcSettingsButton" class="action-button secondary" disabled>Reset Memory Settings</button>
+            </div>
+        </div>
+
+        <div class="section-title">⬡ Activity Log</div>
+        <div id="logMonitor">
+            <div class="log-entry">
+                <span class="log-time">-- : -- : --</span>
+                <span class="log-message">Waiting for activity...</span>
+                <span class="log-instruction">Actions will be logged here</span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer-nav">
+        <a href="index.html" class="nav-button">
+            <img src="battery.svg" alt="Battery">
+            <span>Battery</span>
+        </a>
+        <a href="gpu.html" class="nav-button active">
+            <img src="gpu.svg" alt="GPU">
+            <span>GPU</span>
+        </a>
+        <a href="gpu_plus.html" class="nav-button">
+            <img src="gpu-plus.svg" alt="GPU+">
+            <span>GPU+</span>
+        </a>
+        <a href="visual.html" class="nav-button">
+            <img src="visual.svg" alt="Visual">
+            <span>Visual</span>
+        </a>
+    <a href="phase.html" class="nav-button"><img src="phase.svg" alt=""><span>Pacing</span></a></footer>
+
+    <script src="app_picker.js"></script>
+<script src="gpu.js"></script>
+</body>
+</html>

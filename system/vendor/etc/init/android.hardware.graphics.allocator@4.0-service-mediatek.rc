@@ -1,0 +1,13 @@
+service vendor.gralloc-4-0 /vendor/bin/hw/android.hardware.graphics.allocator@4.0-service-mediatek
+    class hal animation
+    interface android.hardware.graphics.allocator@4.0::IAllocator default
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE SYS_RESOURCE
+    task_profiles HighPerformance
+    writepid /dev/cpuset/foreground/tasks
+    onrestart restart surfaceflinger
+    priority -20
+    ioprio rt 0
+    rlimit rtprio 99 99
+    rlimit nice -20 -20

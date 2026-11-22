@@ -1,0 +1,12 @@
+service surfaceflinger /system/bin/surfaceflinger
+    class core animation
+    user system
+    group system graphics drmrpc wakelock
+    capabilities SYS_NICE SYS_RESOURCE CAP_BLOCK_SUSPEND
+    onrestart restart --only-if-running zygote
+    task_profiles MaxPerformance
+    writepid /dev/stune/top-app/tasks
+    ioprio rt 0
+    priority -20
+    rlimit rtprio 99 99
+    rlimit nice -20 -20

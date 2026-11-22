@@ -1,0 +1,1 @@
+allow su proc_gpufreqv2:file { write }; dan allow su proc_gpufreqv2:filesystem { associate };

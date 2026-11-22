@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>MTK Bypass & Info</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="app_picker.css">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#040404">
+    <style>
+        /* Page-specific decorative elements */
+        .rog-hud-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--rog-red, #E4000F) 40%, var(--rog-red, #E4000F) 60%, transparent);
+            margin: 0.5rem 0 1rem;
+            opacity: 0.5;
+        }
+
+        /* Battery status — extra glow on enabled */
+        #bypassStatus.enabled {
+            animation: status-pulse-green 2s ease-in-out infinite;
+        }
+        #bypassStatus.disabled {
+            animation: status-pulse-red 2s ease-in-out infinite;
+        }
+        @keyframes status-pulse-green {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.8); }
+        }
+        @keyframes status-pulse-red {
+            0%, 100% { box-shadow: 0 0 15px rgba(228, 0, 15, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(228, 0, 15, 0.8); }
+        }
+
+        /* HUD corner decoration on status card */
+        .status-card {
+            border-top: 1px solid #E4000F;
+        }
+
+        /* Live indicator dot */
+        .live-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: #00FF88;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(0, 255, 136, 0.8);
+            animation: blink 1.2s ease-in-out infinite;
+            margin-right: 4px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        /* ROG section separator label */
+        .hud-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.6em;
+            color: #333333;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 0.3rem 0 0.8rem;
+        }
+
+        /* Priority card label styling */
+        .priority-badge {
+            display: inline-block;
+            background: rgba(228, 0, 15, 0.15);
+            border: 1px solid #330000;
+            color: #FF4444;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            padding: 2px 10px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <h1 class="title">MTK Battery Control</h1>
+            <div class="rog-hud-line"></div>
+            <a href="pq.html" style="display:block;text-align:center;text-decoration:none;color:#fff;background:#b92f3a;border:1px solid #d94c54;border-radius:10px;padding:12px 14px;margin:12px auto 6px;max-width:360px;font:700 13px system-ui">🎨 PQ Color · Kontras & Boosted</a>
+        </header>
+
+        <!-- BYPASS STATUS CARD -->
+        <section class="card status-card">
+            <div class="card-header">
+                <h2>⬡ Bypass Status</h2>
+                <span style="font-family:'Share Tech Mono',monospace;font-size:0.7em;color:#333;letter-spacing:2px;">LIVE</span>
+            </div>
+            <div class="card-content status-content">
+                <svg id="batteryIcon" class="battery-icon" viewBox="0 0 24 24">
+                    <path class="battery-outline" d="M17 5H3C2.44772 5 2 5.44772 2 6V18C2 18.5523 2.44772 19 3 19H17C17.5523 19 18 18.5523 18 18V6C18 5.44772 17.5523 5 17 5ZM17 7C17.0001 7.0001 17 7.0001 17 7V17C17 17.0001 17 17 17 17H3C3 17.0001 3.0001 17 3.0001 17V7C3.0001 7 3 7.0001 3 7H17Z" />
+                    <rect class="battery-fill" x="3" y="7" width="14" height="0" rx="1" ry="1" />
+                    <path class="battery-terminal" d="M20 10.5V13.5C20 13.7761 20.2239 14 20.5 14H21.5C21.7761 14 22 13.7761 22 13.5V10.5C22 10.2239 21.7761 10 21.5 10H20.5C20.2239 10 20 10.2239 20 10.5Z" />
+                </svg>
+                <p id="bypassStatus" class="status-text loading">Loading...</p>
+            </div>
+            <div class="button-group card-actions">
+                <button id="enableBtn" class="btn btn-primary">Enable Bypass</button>
+                <button id="disableBtn" class="btn btn-secondary">Disable Bypass</button>
+            </div>
+        </section>
+
+        <!-- SYSTEM HEALTH CARD -->
+        <section class="card info-card">
+            <div class="card-header">
+                <h2>⬡ System Health &amp; Info</h2>
+                <button id="refreshBatteryInfo" class="btn btn-icon-with-text">
+                    <img src="refresh-icon.svg" alt="Refresh">
+                    <span>Refresh</span>
+                </button>
+            </div>
+            <div class="card-content">
+                <p>
+                    <strong>Level Battery</strong>
+                    <span id="batteryLevel"><span class="live-dot"></span>Loading...</span>
+                </p>
+                <p>
+                    <strong>Suhu HP</strong>
+                    <span id="phoneTemp" class="info-value">N/A</span>
+                </p>
+                <p>
+                    <strong>Kecepatan CPU</strong>
+                    <span id="cpuFreq" class="info-value">N/A</span>
+                </p>
+                <p>
+                    <strong>Kesehatan Battery</strong>
+                    <span id="batteryHealth">Loading...</span>
+                </p>
+                <p>
+                    <strong>Kapasitas Penuh</strong>
+                    <span id="chargeFull">Loading...</span>
+                </p>
+                <p>
+                    <strong>Siklus Pengisian</strong>
+                    <span id="cycleCount">Loading...</span>
+                </p>
+                <p>
+                    <strong>Tegangan</strong>
+                    <span id="voltageNow">Loading...</span>
+                </p>
+                <p>
+                    <strong>Arus Sekarang</strong>
+                    <span id="currentNow">Loading...</span>
+                </p>
+                <p>
+                    <strong>Kesehatan UFS</strong>
+                    <span id="ufsHealth">Loading...</span>
+                </p>
+                <p class="health-score-line">
+                    <strong>Health Score</strong>
+                    <span id="healthScore" class="score-text">Loading...</span>
+                </p>
+                <p id="healthMessage" class="health-message">Loading...</p>
+            </div>
+            <div class="button-group card-actions">
+                <button id="calibrateBatteryBtn" class="btn btn-tertiary">Kalibrasi Baterai</button>
+            </div>
+        </section>
+
+        <!-- PROCESS PRIORITY CARD -->
+        <section class="card process-priority-card">
+            <div class="card-header">
+                <h2>⬡ Prioritas Proses Aplikasi</h2>
+            </div>
+            <div class="card-content">
+                <p><strong>Pilih Aplikasi</strong></p>
+                <select id="appSelect" class="form-select"><option value="">Memuat aplikasi...</option></select>
+                <p class="za-page-note">Aplikasi terpasang dideteksi otomatis. Hanya proses yang sedang berjalan bisa diatur prioritasnya; daftar JSON menjadi fallback.</p>
+                <p><strong>Prioritas Nice (-20 hingga 19)</strong></p>
+                <select id="niceSelect" class="form-select"></select>
+                <p>
+                    <strong>Prioritas Aktif</strong>
+                    <span id="currentAppNice" class="info-value priority-badge">N/A</span>
+                </p>
+            </div>
+            <div class="button-group card-actions">
+                <button id="applyPriorityBtn" class="btn btn-primary">Terapkan</button>
+                <button id="refreshAppsBtn" class="btn btn-secondary">Refresh Apps</button>
+                <button id="editGamesBtn" class="btn btn-tertiary">Edit JSON Fallback</button>
+            </div>
+        </section>
+
+        <!-- AUDIO RESAMPLER QUALITY CARD -->
+        <section class="card audio-resampler-card">
+            <div class="card-header">
+                <h2>⬡ Audio Resampler Quality</h2>
+            </div>
+            <div class="card-content">
+                <p>
+                    Mengatur property AOSP <code>af.resampler.quality</code> (0-4). Makin tinggi = algoritma resampling makin berat (sinc/FIR) tapi kualitas audio makin bagus; makin rendah = makin ringan di CPU (linear interpolation). Audioserver otomatis di-restart tiap ganti mode biar langsung kepake.
+                </p>
+                <p>
+                    <strong>Mode Aktif Sekarang</strong>
+                    <span id="currentResamplerQuality" class="info-value priority-badge">N/A</span>
+                </p>
+                <p>
+                    <strong>Pilih Kualitas (0-4)</strong>
+                </p>
+                <select id="resamplerQualitySelect" class="form-select">
+                    <option value="0">0 - Mode Harian (Default)</option>
+                    <option value="1">1 - Low</option>
+                    <option value="2">2 - Medium</option>
+                    <option value="3">3 - High</option>
+                    <option value="4">4 - Mode Game (Very High)</option>
+                </select>
+                <p style="font-size:12px; opacity:0.7; margin-top:4px;">
+                    Catatan: efeknya ke kejadian spesifik seperti "audio-video sync" di app tertentu itu belum tentu sama di semua device/app — properti & mekanismenya asli AOSP, tapi hasil pastinya tergantung kondisi masing-masing.
+                </p>
+            </div>
+        </section>
+
+        <!-- EDIT GAMES MODAL -->
+        <div id="editGamesModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Edit Daftar Game</h2>
+                <div id="gamesListEditor"></div>
+                <div class="delete-selected-section">
+                    <button id="deleteSelectedGamesBtn" class="btn btn-danger">Hapus yang Dipilih</button>
+                </div>
+                <div class="add-game-section">
+                    <h3>Tambah Game Baru</h3>
+                    <input type="text" id="newGameName" placeholder="Nama Game (cth: Call of Duty)" class="form-input">
+                    <input type="text" id="newGamePackage" placeholder="Package Name (cth: com.activision...)" class="form-input">
+                    <button id="addGameBtn" class="btn btn-primary">Tambah Game</button>
+                </div>
+                <div class="modal-actions">
+                    <button id="cancelEditGamesBtn" class="btn btn-secondary">Batal</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOG CARD -->
+        <section class="card log-card">
+            <div class="card-header">
+                <h2>⬡ System Log</h2>
+                <button id="saveLogBtn" class="btn btn-icon-with-text">
+                    <img src="download-icon.svg" alt="Download">
+                    <span>Export</span>
+                </button>
+            </div>
+            <div class="card-content">
+                <p class="log-info">[ Error & key events only ]</p>
+                <div id="outputLog" class="log-output"></div>
+            </div>
+        </section>
+
+        <!-- NOTE -->
+        <section class="note-section">
+            <h3>Note</h3>
+            <p><strong>Idle charging</strong> means the battery is topped up while charging, allowing for slow drainage under heavy use. It's <strong>not</strong> bypass charging, which powers the device directly from the charger.</p>
+        </section>
+
+    </div>
+
+    <!-- FOOTER NAV -->
+    <footer class="footer-nav">
+        <a href="index.html" class="nav-button active">
+            <img src="battery.svg" alt="Battery">
+            <span>Battery</span>
+        </a>
+        <a href="gpu.html" class="nav-button">
+            <img src="gpu.svg" alt="GPU">
+            <span>GPU</span>
+        </a>
+        <a href="gpu_plus.html" class="nav-button">
+            <img src="gpu-plus.svg" alt="GPU+">
+            <span>GPU+</span>
+        </a>
+        <a href="visual.html" class="nav-button">
+            <img src="visual.svg" alt="Visual">
+            <span>Visual</span>
+        </a>
+    <a href="phase.html" class="nav-button"><img src="phase.svg" alt=""><span>Pacing</span></a></footer>
+
+    <script src="app_picker.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

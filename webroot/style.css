@@ -1,0 +1,991 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+/* =============================================
+   ROG GAME BOOSTER - CSS VARIABLE SYSTEM
+   ============================================= */
+:root {
+    --rog-red: #E4000F;
+    --rog-red-dim: #8B0008;
+    --rog-red-glow: rgba(228, 0, 15, 0.6);
+    --rog-red-subtle: rgba(228, 0, 15, 0.15);
+    --rog-orange: #FF6B00;
+    --rog-neon-green: #00FF88;
+    --rog-neon-green-glow: rgba(0, 255, 136, 0.4);
+    --rog-cyan: #00D4FF;
+    --rog-cyan-glow: rgba(0, 212, 255, 0.3);
+
+    --bg-primary: #040404;
+    --bg-secondary: #0A0A0A;
+    --bg-card: #0D0D0D;
+    --bg-card-header: #111111;
+    --bg-elevated: #161616;
+    --bg-input: #0F0F0F;
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #888888;
+    --text-accent: #FF3A3A;
+    --text-mono: #AAFFCC;
+
+    --border-default: #222222;
+    --border-accent: #E4000F;
+    --border-subtle: #1A1A1A;
+
+    --shadow-red: 0 0 15px rgba(228, 0, 15, 0.4);
+    --shadow-red-lg: 0 0 30px rgba(228, 0, 15, 0.5);
+    --shadow-green: 0 0 15px rgba(0, 255, 136, 0.3);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.8);
+
+    /* Keep backward compat with script.js color classes */
+    --ios-blue: var(--rog-cyan);
+    --ios-red: var(--rog-red);
+    --ios-green: var(--rog-neon-green);
+    --ios-gray: #888888;
+
+    --background-color: var(--bg-primary);
+    --card-bg: var(--bg-card);
+    --text-color: var(--text-primary);
+    --header-bg: var(--bg-card-header);
+    --border-color: var(--border-default);
+    --footer-bg: rgba(4, 4, 4, 0.95);
+    --footer-shadow: 0 -2px 20px rgba(228, 0, 15, 0.2);
+    --form-element-bg: var(--bg-input);
+    --form-element-border: var(--border-default);
+    --game-entry-bg: var(--bg-elevated);
+
+    --status-text-loading-bg: var(--bg-elevated);
+    --status-text-loading-color: #888888;
+    --log-bg: #060606;
+    --log-info-color: #666666;
+    --log-error-color: var(--rog-red);
+
+    --battery-outline-color: #444444;
+    --battery-terminal-color: #444444;
+    --battery-fill-loading: #333333;
+    --battery-fill-enabled: var(--rog-neon-green);
+    --battery-fill-disabled: var(--rog-red);
+    --battery-fill-error: var(--rog-red);
+}
+
+/* =============================================
+   GLOBAL BACKGROUND + RESET
+   ============================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    background-color: var(--bg-primary);
+    background-image:
+        linear-gradient(rgba(228, 0, 15, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(228, 0, 15, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text-primary);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-bottom: 80px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* Scanline overlay on body */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* =============================================
+   CONTAINER
+   ============================================= */
+.container {
+    max-width: 500px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem 0;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rog-red), transparent);
+}
+
+.title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3em;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px var(--rog-red-glow);
+}
+
+/* ROG logo-style red accent on title */
+.title::before {
+    content: '⬡ ';
+    color: var(--rog-red);
+    font-size: 0.7em;
+}
+
+/* =============================================
+   CARDS — ROG Corner-Bracket Style
+   ============================================= */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 4px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    position: relative;
+}
+
+/* Red corner brackets */
+.card::before,
+.card::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    z-index: 2;
+}
+
+.card::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--rog-red);
+    border-left: 2px solid var(--rog-red);
+    box-shadow: -2px -2px 8px var(--rog-red-glow);
+}
+
+.card::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--rog-red);
+    border-right: 2px solid var(--rog-red);
+    box-shadow: 2px 2px 8px var(--rog-red-glow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    background-color: var(--bg-card-header);
+    border-bottom: 1px solid var(--border-accent);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Angled left accent on card header */
+.card-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--rog-red), var(--rog-red-dim));
+    box-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.card-header h2 {
+    margin: 0;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78em;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    padding-left: 0.5rem;
+}
+
+.card-content {
+    padding: 1rem 1.2rem;
+}
+
+/* =============================================
+   STATUS CARD
+   ============================================= */
+.status-card .card-content {
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.status-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-text {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1em;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    display: inline-block;
+    min-width: 180px;
+    user-select: none;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.status-text.loading {
+    background: var(--bg-elevated);
+    color: #555555;
+    animation: pulse-rog 1.5s ease-in-out infinite;
+    border: 1px solid var(--border-default);
+}
+
+.status-text.enabled {
+    background: linear-gradient(90deg, #003322, #005533);
+    color: var(--rog-neon-green);
+    border: 1px solid var(--rog-neon-green);
+    box-shadow: 0 0 15px var(--rog-neon-green-glow), inset 0 0 10px rgba(0, 255, 136, 0.1);
+    text-shadow: 0 0 8px var(--rog-neon-green);
+}
+
+.status-text.disabled {
+    background: linear-gradient(90deg, #1a0000, #330000);
+    color: var(--rog-red);
+    border: 1px solid var(--rog-red);
+    box-shadow: 0 0 15px var(--rog-red-glow), inset 0 0 10px rgba(228, 0, 15, 0.1);
+    text-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.status-text.error {
+    background: var(--rog-red);
+    color: white;
+    font-weight: 700;
+    box-shadow: var(--shadow-red);
+}
+
+@keyframes pulse-rog {
+    0%, 100% { opacity: 1; box-shadow: none; }
+    50% { opacity: 0.5; box-shadow: 0 0 10px rgba(228, 0, 15, 0.2); }
+}
+
+/* =============================================
+   BATTERY SVG ICON
+   ============================================= */
+.battery-icon {
+    width: 70px;
+    height: 70px;
+    margin: 8px auto;
+    display: block;
+    filter: drop-shadow(0 0 6px currentColor);
+}
+
+.battery-outline {
+    fill: none;
+    stroke: var(--battery-outline-color);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.5s ease-in-out;
+}
+
+.battery-terminal {
+    fill: var(--battery-terminal-color);
+    transition: fill 0.5s ease-in-out;
+}
+
+.battery-fill {
+    fill: var(--battery-fill-loading);
+    transition: all 0.5s ease-in-out;
+}
+
+/* =============================================
+   CARD ACTIONS
+   ============================================= */
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    justify-content: center;
+    padding: 0.8rem 1.2rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* =============================================
+   BUTTONS — ROG Style
+   ============================================= */
+.btn {
+    cursor: pointer;
+    border: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    user-select: none;
+    flex: 1;
+    text-align: center;
+    min-width: 110px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    position: relative;
+}
+
+.btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--rog-red), #AA0008);
+    color: white;
+    box-shadow: 0 0 12px rgba(228, 0, 15, 0.4);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #FF1F2F, var(--rog-red));
+    box-shadow: 0 0 20px rgba(228, 0, 15, 0.7);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #AAAAAA;
+    border: 1px solid #333333;
+}
+.btn-secondary:hover {
+    border-color: var(--rog-red);
+    color: var(--rog-red);
+    box-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.btn-tertiary {
+    background: var(--bg-elevated);
+    color: var(--rog-cyan);
+    border: 1px solid #222222;
+    flex-basis: 100%;
+    margin-top: 0.2rem;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+.btn-tertiary:hover {
+    border-color: var(--rog-cyan);
+    box-shadow: 0 0 8px var(--rog-cyan-glow);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #004422, #006633);
+    color: var(--rog-neon-green);
+    border: 1px solid var(--rog-neon-green);
+    box-shadow: 0 0 8px var(--rog-neon-green-glow);
+}
+.btn-success:active {
+    transform: translateY(1px);
+    opacity: 0.9;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #660000, var(--rog-red));
+    color: white;
+    box-shadow: 0 0 10px rgba(228, 0, 15, 0.3);
+}
+.btn-danger:hover {
+    box-shadow: var(--shadow-red);
+}
+
+.btn-icon-with-text {
+    background: none;
+    border: 1px solid #222222;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--rog-cyan);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    clip-path: none;
+    min-width: auto;
+    flex: none;
+}
+.btn-icon-with-text:hover {
+    border-color: var(--rog-cyan);
+    box-shadow: 0 0 8px var(--rog-cyan-glow);
+}
+.btn-icon-with-text img {
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+}
+.btn-icon-with-text:active {
+    opacity: 0.7;
+}
+
+.card-header .btn-icon-with-text {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* =============================================
+   INFO CARD — System Health
+   ============================================= */
+.info-card .card-content p {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.95rem;
+}
+
+.info-card .card-content p:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.info-card .card-content strong {
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    padding-right: 1rem;
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 0.85em;
+}
+
+.info-card .card-content span {
+    text-align: right;
+    flex-grow: 1;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9em;
+}
+
+.health-score-line span {
+    font-weight: 700;
+}
+
+.score-text.good {
+    color: var(--rog-neon-green);
+    text-shadow: 0 0 8px var(--rog-neon-green-glow);
+}
+.score-text.fair {
+    color: var(--rog-orange);
+}
+.score-text.poor {
+    color: var(--rog-red);
+    text-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.health-message {
+    font-style: normal;
+    font-size: 0.82em;
+    text-align: center;
+    margin-top: 0.8rem;
+    color: #555555;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* =============================================
+   INFO VALUE STATUS CLASSES
+   ============================================= */
+.info-value.good {
+    color: var(--rog-neon-green) !important;
+    text-shadow: 0 0 6px var(--rog-neon-green-glow);
+}
+.info-value.moderate {
+    color: var(--rog-orange) !important;
+}
+.info-value.poor {
+    color: var(--rog-red) !important;
+    text-shadow: 0 0 6px var(--rog-red-glow);
+}
+.info-value.error {
+    color: var(--rog-red) !important;
+}
+.info-value.warning {
+    color: var(--rog-orange) !important;
+}
+
+/* =============================================
+   PROCESS PRIORITY CARD
+   ============================================= */
+.process-priority-card .card-content p {
+    font-size: 0.82em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0.8rem 0 0.3rem;
+    font-weight: 600;
+}
+
+/* =============================================
+   FORM ELEMENTS
+   ============================================= */
+.form-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border-default);
+    border-radius: 2px;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23E4000F" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-select:focus {
+    outline: none;
+    border-color: var(--rog-red);
+    box-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.form-input {
+    width: calc(100% - 24px);
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-default);
+    border-radius: 2px;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--rog-red);
+    box-shadow: 0 0 8px var(--rog-red-glow);
+}
+.form-input::placeholder {
+    color: #444444;
+}
+
+/* =============================================
+   LOG CARD
+   ============================================= */
+.log-output {
+    background-color: var(--log-bg);
+    border-radius: 2px;
+    padding: 0.8rem 1rem;
+    min-height: 120px;
+    max-height: 220px;
+    overflow-y: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78em;
+    color: #666666;
+    border: 1px solid var(--border-default);
+    scrollbar-width: thin;
+    scrollbar-color: var(--rog-red) transparent;
+}
+.log-output::-webkit-scrollbar { width: 3px; }
+.log-output::-webkit-scrollbar-track { background: transparent; }
+.log-output::-webkit-scrollbar-thumb { background: var(--rog-red); }
+
+.log-info {
+    font-size: 0.78em;
+    color: var(--log-info-color);
+    margin-bottom: 0.6rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.log-entry {
+    margin-bottom: 0.15em;
+    word-break: break-all;
+    color: #555555;
+}
+
+.log-entry.error {
+    color: var(--rog-red);
+    text-shadow: 0 0 4px var(--rog-red-glow);
+}
+
+.log-entry.warning {
+    color: var(--rog-orange);
+}
+
+/* =============================================
+   NOTE SECTION
+   ============================================= */
+.note-section {
+    font-size: 0.82em;
+    color: #444444;
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 0.5rem;
+}
+.note-section h3 {
+    margin: 0 0 0.3rem;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: 'Orbitron', monospace;
+}
+.note-section p { margin: 0; line-height: 1.6; }
+
+/* =============================================
+   FOOTER NAV — ROG HUD Bar
+   ============================================= */
+.footer-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(4, 4, 4, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid #1A1A1A;
+    box-shadow: var(--footer-shadow), 0 -1px 0 var(--rog-red);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65em;
+    font-weight: 700;
+    color: #444444;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    flex: 1;
+    padding-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    gap: 3px;
+}
+
+.nav-button img {
+    width: 22px;
+    height: 22px;
+    filter: invert(1) brightness(0.3);
+    transition: filter 0.2s ease, transform 0.15s ease;
+}
+
+.nav-button.active img {
+    filter: invert(20%) sepia(1) saturate(10) hue-rotate(340deg) brightness(1.2);
+    transform: translateY(-2px);
+}
+
+.nav-button.active span {
+    color: var(--rog-red);
+    text-shadow: 0 0 8px var(--rog-red-glow);
+}
+
+.nav-button:hover img {
+    filter: invert(1) brightness(0.6);
+}
+.nav-button:hover span { color: #777777; }
+
+/* Active nav indicator line */
+.nav-button.active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 30px;
+    height: 2px;
+    background: var(--rog-red);
+    box-shadow: 0 0 6px var(--rog-red-glow);
+    border-radius: 1px 1px 0 0;
+}
+.nav-button { position: relative; }
+
+/* =============================================
+   MODAL — ROG Style
+   ============================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-default);
+    margin: auto;
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(228, 0, 15, 0.3), var(--shadow-card);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transform: scale(0.97);
+    transition: transform 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rog-red) transparent;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+/* Modal corner brackets */
+.modal-content::before,
+.modal-content::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    z-index: 2;
+}
+.modal-content::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--rog-red);
+    border-left: 2px solid var(--rog-red);
+}
+.modal-content::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--rog-red);
+    border-right: 2px solid var(--rog-red);
+}
+
+.modal-content h2 {
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 4px;
+    font-family: 'Orbitron', monospace;
+    font-size: 1em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px var(--rog-red-glow);
+}
+
+.close-button {
+    color: #555555;
+    position: absolute;
+    top: 14px; right: 18px;
+    font-size: 24px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    font-family: sans-serif;
+}
+.close-button:hover { color: var(--rog-red); text-shadow: 0 0 8px var(--rog-red-glow); }
+
+/* =============================================
+   GAME LIST EDITOR
+   ============================================= */
+.game-entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.game-entry {
+    display: flex;
+    align-items: center;
+    padding: 9px 12px;
+    background-color: var(--bg-elevated);
+    border-radius: 2px;
+    border: 1px solid var(--border-default);
+    gap: 10px;
+    transition: border-color 0.2s;
+}
+.game-entry:hover { border-color: #333333; }
+
+.game-number {
+    font-weight: 700;
+    color: var(--rog-red);
+    min-width: 22px;
+    text-align: right;
+    font-size: 0.85em;
+    opacity: 0.8;
+    flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.game-entry p {
+    margin: 0;
+    flex-grow: 1;
+    color: var(--text-primary);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 5px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    font-size: 0.9em;
+}
+.game-entry p::-webkit-scrollbar { display: none; }
+
+/* Checkbox */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid #333333;
+    background-color: var(--bg-input);
+    border-radius: 2px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+}
+input[type="checkbox"]:checked {
+    background-color: var(--rog-red);
+    border-color: var(--rog-red);
+    box-shadow: 0 0 6px var(--rog-red-glow);
+}
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 12px; height: 12px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    background-size: cover;
+}
+
+.delete-selected-section {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.add-game-section {
+    border-top: 1px solid var(--border-default);
+    padding-top: 16px;
+    margin-top: 8px;
+}
+
+.add-game-section h3 {
+    color: var(--rog-red);
+    margin-bottom: 12px;
+    font-size: 0.82em;
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.add-game-section .form-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* =============================================
+   BUTTON GROUP (non-card-actions contexts)
+   ============================================= */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+/* =============================================
+   STATUS ICON COLOR PROPAGATION
+   (for battery icon color matching bypass status)
+   ============================================= */
+.status-text.enabled ~ * .battery-fill,
+#batteryIcon.enabled .battery-fill {
+    fill: var(--battery-fill-enabled);
+}
+
+/* =============================================
+   PULSE / GLOW ANIMATIONS
+   ============================================= */
+@keyframes rog-glow-pulse {
+    0%, 100% { box-shadow: 0 0 8px var(--rog-red-glow); }
+    50% { box-shadow: 0 0 20px var(--rog-red-glow), 0 0 40px rgba(228, 0, 15, 0.2); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (min-width: 375px) {
+    .btn-tertiary { flex-basis: auto; }
+}

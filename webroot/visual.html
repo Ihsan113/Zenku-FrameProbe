@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZENKU · Native Visual</title>
+<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="app_picker.css">
+<style>
+.visual-page{max-width:560px;margin:auto;padding:18px 14px 100px;color:var(--text-primary,#eee);font-family:system-ui,sans-serif;box-sizing:border-box}
+.visual-page *{box-sizing:border-box}.visual-page h1{font-family:system-ui,sans-serif;text-align:left;font-size:25px;letter-spacing:-.5px;margin:7px 0 4px;color:#f5f5f5;text-shadow:none}.visual-page h2{font-size:15px;margin:0;color:#f5f5f5;letter-spacing:.2px}.visual-page p{font-size:12px;line-height:1.55;color:#a7a7a7;margin:7px 0 0}.visual-page .eyebrow{font-size:10px;font-weight:750;letter-spacing:2px;color:#ef525b}.v-card{background:#131313;border:1px solid #292929;border-radius:12px;padding:15px;margin-top:12px}.v-flex{display:flex;align-items:center;justify-content:space-between;gap:10px}.v-tag{font:600 10px system-ui;color:#ddd;background:#262626;border-radius:6px;padding:5px 7px;white-space:nowrap}.v-good{color:#86d8a9;background:#183025}.v-warn{color:#ffbc72;background:#362a19}.v-label{display:block;font-size:13px;font-weight:650;margin:13px 0 7px;color:#e4e4e4}.visual-page select{width:100%;background:#202020;color:#fff;border:1px solid #393939;border-radius:8px;font:14px system-ui;padding:11px;min-height:44px}.v-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.v-options input{position:absolute;opacity:0;pointer-events:none}.v-options label{display:block;text-align:center;padding:11px 0;border:1px solid #363636;border-radius:8px;color:#bdbdbd;font-size:13px;font-weight:650;cursor:pointer}.v-options input:checked+label{border-color:#ef454d;background:#381719;color:#fff}.v-options input:focus-visible+label{outline:2px solid #fff}.v-row{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid #292929}.v-row:first-of-type{margin-top:10px}.v-row label{flex:1;font-size:13px;font-weight:600;color:#eee}.v-row small{display:block;font-size:11px;font-weight:400;color:#aaa;margin-top:4px;line-height:1.45}.v-row input{appearance:none;-webkit-appearance:none;width:40px;height:24px;flex:none;background:#3a3a3a;border:1px solid #505050;border-radius:20px;position:relative;cursor:pointer;margin:0}.v-row input:before{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#eee;transition:transform .15s}.v-row input:checked{background:#c72b34;border-color:#eb4850}.v-row input:checked:before{transform:translateX(16px)}.v-row input:focus-visible{outline:2px solid #fff}.v-btn{border:1px solid #363636;border-radius:9px;background:#242424;color:#eee;padding:12px;font-size:13px;font-weight:700;min-height:44px;width:100%;cursor:pointer}.v-btn.primary{background:#c8232e;border-color:#ef444e;color:white}.v-btn:disabled,.visual-page select:disabled{opacity:.45;cursor:not-allowed}.v-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v-status{font:12px/1.5 system-ui;white-space:pre-wrap;overflow-wrap:anywhere;color:#ddd;margin-top:10px}.v-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v-metric{background:#1d1d1d;padding:10px;border-radius:7px;min-width:0}.v-metric small{display:block;color:#999;font-size:11px}.v-metric strong{display:block;color:#eee;font-size:14px;margin-top:4px;overflow-wrap:anywhere}.v-divider{border-top:1px solid #292929;margin:12px 0}.visual-page fieldset{padding:0;margin:0;border:0;min-width:0}.visual-page fieldset:disabled{opacity:.6}.v-caution{border-left:2px solid #c79a53;padding-left:9px}.footer-nav a{min-width:0;letter-spacing:.7px}
+
+.v-log{max-height:300px;overflow:auto;background:#0b0b0b;border:1px solid #303030;border-radius:8px;padding:9px;margin-top:10px;overscroll-behavior:contain}.v-log-entry{font:11px/1.5 monospace;white-space:pre-wrap;overflow-wrap:anywhere;border-bottom:1px solid #242424;padding:5px 0;color:#bdbdbd}.v-log-entry.success{color:#91d7a7}.v-log-entry.error{color:#ff8888}.v-log-entry.warn{color:#ffc47f}.v-raw{font:11px/1.5 monospace;color:#c8c8c8;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto}.v-card details{margin-top:12px;color:#ccc;font:12px system-ui}.v-consent{display:flex;gap:8px;align-items:flex-start;color:#f1c28e;font:12px/1.5 system-ui;margin:10px 0}.v-consent input{flex:none;margin-top:2px}.visual-page [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="visual-page">
+<header><div class="eyebrow">ZENKU / R4.1 NATIVE MALI</div><h1>Visual Gaming</h1><p>Kontrol driver per aplikasi · Mali-G57 MC2 · MT6789</p></header>
+<section class="v-card" aria-labelledby="live-heading">
+<div class="v-flex"><h2 id="live-heading">Status properti</h2><span id="compat" class="v-tag">Memeriksa</span></div>
+<div class="v-metrics"><div class="v-metric"><small>GPUD</small><strong id="live-gpud">—</strong></div><div class="v-metric"><small>Target</small><strong id="live-target">—</strong></div><div class="v-metric"><small>AF / Filter</small><strong id="live-filter">—</strong></div><div class="v-metric"><small>Picture mode</small><strong id="live-pq">—</strong></div></div>
+<p>Ini hasil pembacaan properti, bukan jaminan override GPU aktif dalam game.</p><details><summary>Getprop aktual (texture &amp; sampler)</summary><pre id="raw-props" class="v-raw">—</pre></details>
+<div id="message" class="v-status" role="status" aria-live="polite">Menghubungkan WebUI...</div>
+<button id="refresh" class="v-btn" style="margin-top:10px">Refresh status</button>
+</section>
+<section class="v-card" aria-labelledby="profile-heading">
+<div class="v-flex"><h2 id="profile-heading">Profil tekstur</h2><span class="v-tag v-good">Teruji GLES</span></div>
+<fieldset id="profile" disabled>
+<label class="v-label" for="target">Target aplikasi</label>
+<select id="target"><option value="">Memuat aplikasi terpasang...</option></select>
+<p class="za-page-note">Daftar aplikasi terpasang dari Android. Ikon &amp; nama diambil dari KernelSU jika tersedia.</p>
+<button type="button" id="visual-refresh-apps" class="v-btn" style="margin-top:8px">↻ Refresh aplikasi</button>
+<div class="v-label">Anisotropic filtering</div>
+<div class="v-options" role="radiogroup" aria-label="Anisotropic filtering">
+<input type="radio" name="af" value="off" id="af0"><label for="af0">Native</label>
+<input type="radio" name="af" value="2.0" id="af2"><label for="af2">2×</label>
+<input type="radio" name="af" value="4.0" id="af4" checked><label for="af4">4×</label>
+<input type="radio" name="af" value="8.0" id="af8"><label for="af8">8×</label>
+<input type="radio" name="af" value="16.0" id="af16"><label for="af16">16×</label>
+</div>
+<p>4× = rekomendasi awal. 16× didukung GPU, tetapi lebih berat. Ini override panggilan AF yang sudah ada, bukan penambah otomatis pada semua tekstur.</p>
+<div class="v-row"><label for="tri">Trilinear filtering<small>Override filter mipmap yang cocok.</small></label><input type="checkbox" id="tri" checked></div>
+<div class="v-row"><label for="aosp">MSAA AOSP 4×<small>Global; terutama konfigurasi EGL ES2.</small></label><input type="checkbox" id="aosp" checked></div>
+</fieldset>
+</section>
+<section class="v-card" aria-labelledby="advanced-heading">
+<div class="v-flex"><h2 id="advanced-heading">Eksperimen driver</h2><span class="v-tag v-warn">Opsional</span></div>
+<p class="v-caution">Default OFF. Belum lolos pengujian game. Coba satu per satu, idealnya di benchmark offline.</p>
+<fieldset id="advanced" disabled>
+<div class="v-row"><label for="rgb">Force RGBA8888<small>Mengubah pilihan EGL; belum meningkatkan buffer yang sudah 8-bit.</small></label><input type="checkbox" id="rgb"></div>
+<div class="v-row"><label for="native">Native Mali MSAA 4×<small>Eksperimental: template EGL offscreen teruji; window/ES3 belum. Dapat gagal memilih config.</small></label><input type="checkbox" id="native"></div>
+<div class="v-row"><label for="highp">Highp FP32<small>Pending verifikasi presisi shader; bisa menambah beban GPU.</small></label><input type="checkbox" id="highp"></div>
+</fieldset>
+</section>
+<section class="v-card">
+<h2>Terapkan sesi ini</h2>
+<p>Game target dan target lama yang dikenal akan ditutup agar properti dibaca saat proses berikutnya dimulai. Tidak reboot, tidak menyimpan profil visual ke cache. Buka game secara manual.</p>
+<p class="v-caution">Kompatibilitas anti-cheat belum diketahui. Uji di benchmark atau offline; jangan gunakan saat pertandingan berlangsung.</p>
+<label id="consent-row" class="v-consent" hidden><input type="checkbox" id="consent"> Saya memahami risiko eksperimen driver dan akan menguji di benchmark/offline.</label>
+<button id="apply" class="v-btn primary" style="margin-top:12px" disabled>Terapkan &amp; tutup game</button>
+<div class="v-buttons"><button id="defaults" class="v-btn" disabled>Isi profil R4</button><button id="off" class="v-btn" disabled>Matikan native</button></div>
+<p>Matikan native mengembalikan GPUD dan Highp ke OFF; MSAA AOSP kembali ON. Reboot selalu memuat default R4 (MLBB, AF 4×, trilinear), bukan perubahan sesi.</p>
+</section>
+<section class="v-card" aria-labelledby="log-heading">
+<div class="v-flex"><h2 id="log-heading">Activity Log</h2><span class="v-tag" id="log-count">0</span></div>
+<div id="logMonitor" class="v-log" role="log" aria-live="off"></div>
+<div class="v-buttons"><button id="copy-log" class="v-btn">Salin / pilih log</button><button id="clear-log" class="v-btn">Bersihkan</button></div>
+<p>Log sesi WebUI saja · tidak disimpan ke cache. Menampilkan exit code, stdout/stderr, dan verifikasi properti.</p>
+<textarea id="log-export" readonly hidden style="width:100%;min-height:100px;background:#191919;color:#eee;margin-top:8px" aria-label="Salinan log"></textarea>
+</section>
+<section class="v-card">
+<h2>MediaTek Display PQ</h2><p>Kontrol PQ HAL MT6789, Android Boosted dan saturasi SurfaceFlinger kini tersedia. Gamma dan Global PQ tidak disentuh. Batas slider kontras/saturasi/brightness maksimal 9, dengan template serta reset.</p><a class="v-btn primary" href="pq.html" style="margin-top:12px;display:block;text-align:center;text-decoration:none">Buka PQ Color Control</a>
+</section>
+</main>
+<footer class="footer-nav"><a href="index.html" class="nav-button"><img src="battery.svg" alt=""><span>Battery</span></a><a href="gpu.html" class="nav-button"><img src="gpu.svg" alt=""><span>GPU</span></a><a href="gpu_plus.html" class="nav-button"><img src="gpu-plus.svg" alt=""><span>GPU+</span></a><a href="visual.html" class="nav-button active" aria-current="page"><img src="visual.svg" alt=""><span>Visual</span></a><a href="phase.html" class="nav-button"><img src="phase.svg" alt=""><span>Pacing</span></a></footer>
+<script src="app_picker.js"></script>
+<script src="visual.js?v=4.1"></script>
+</body></html>

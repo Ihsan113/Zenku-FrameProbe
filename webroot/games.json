@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Mobile Legends",
+    "packageName": "com.mobile.legends"
+  },
+  {
+    "name": "Genshin Impact",
+    "packageName": "com.hoyoverse.GenshinImpact"
+  },
+  {
+    "name": "PUBG Mobile",
+    "packageName": "com.tencent.ig"
+  },
+  {
+    "name": "Free Fire",
+    "packageName": "com.dts.freefireth"
+  },
+  {
+    "name": "Apex Legends Mobile",
+    "packageName": "com.ea.gp.apexlegendsmobile"
+  },
+  {
+    "name": "Call of Duty Mobile",
+    "packageName": "com.activision.callofduty.shooter"
+  },
+  {
+    "name": "Honkai Star Rail",
+    "packageName": "com.hoyoverse.hkrpg"
+  },
+  {
+    "name": "Arena Breakout",
+    "packageName": "com.tencent.tmgp.codm"
+  },
+  {
+    "name": "Wild Rift",
+    "packageName": "com.riotgames.league.wildrift"
+  },
+  {
+    "name": "Clash Royale",
+    "packageName": "com.supercell.clashroyale"
+  },
+  {
+    "name": "Clash of Clans",
+    "packageName": "com.supercell.clashofclans"
+  },
+  {
+    "name": "Minecraft",
+    "packageName": "com.mojang.minecraftpe"
+  },
+  {
+    "name": "Roblox",
+    "packageName": "com.roblox.client"
+  },
+  {
+    "name": "Asphalt 9",
+    "packageName": "com.gameloft.android.ANMP.GloftA9HM"
+  },
+  {
+    "name": "Diablo Immortal",
+    "packageName": "com.blizzard.diablo.immortal"
+  },
+  {
+    "name": "Tower of Fantasy",
+    "packageName": "com.hotta.tof.gp"
+  },
+  {
+    "name": "Undawn",
+    "packageName": "com.tencent.cosg"
+  },
+  {
+    "name": "Valorant Mobile (Alpha/Beta)",
+    "packageName": "com.riotgames.valorant.mobile"
+  },
+  {
+    "name": "Garena Free Fire MAX",
+    "packageName": "com.dts.freefiremax"
+  },
+  {
+    "name": "State of Survival",
+    "packageName": "com.kingsgroup.sos"
+  },
+  {
+    "name": "Rise of Kingdoms",
+    "packageName": "com.lilithgames.rok"
+  },
+  {
+    "name": "Mobile Legends: Adventure",
+    "packageName": "com.moonton.mobilehero"
+  },
+  {
+    "name": "BB Rancing",
+    "packageName": "com.vectorunit.purple.googleplay"
+  },
+  {
+    "name": "Garena Delta Force",
+    "packageName": "com.garena.game.df"
+  },
+  {
+    "name": "Bus Simulator",
+    "packageName": "com.maleo.bussimulatorid"
+  },
+  {
+    "name": "GPU Test",
+    "packageName": "com.PikaApp.GPUMarkBenchmark"
+  },
+  {
+    "name": "Gpu test2",
+    "packageName": "com.futuremark.dmandroid.application"
+  },
+  {
+    "name": "Genshin",
+    "packageName": "com.miHoYo.GenshinImpact"
+  },
+  {
+    "name": "Rfs",
+    "packageName": "it.rortos.realflightsimulator"
+  },
+  {
+    "name": "Gold and glory",
+    "packageName": "com.dois.greedgame"
+  },
+  {
+    "name": "Carxstreet",
+    "packageName": "com.carxtech.sr"
+  },
+  {
+    "name": "Rpg",
+    "packageName": "com.wan.lzgtwan"
+  },
+  {
+    "name": "Mobil ofroad",
+    "packageName": "com.RoosterGames.OffroadLeague"
+  },
+  {
+    "name": "GameAAA",
+    "packageName": "com.gryphline.endfield.gp"
+  },
+  {
+    "name": "Survival",
+    "packageName": "com.catsbit.oxidesurvivalisland"
+  }
+]

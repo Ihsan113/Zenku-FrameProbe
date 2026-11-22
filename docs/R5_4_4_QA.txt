@@ -1,0 +1,18 @@
+ZENKU R5.4.4 PQ WebRoot — host QA checklist
+[ ] All original R5.4.2 files retained
+[ ] Only service.sh, customize.sh, module.prop, visual.html modified
+[ ] New pq.html, pq.js, pq_tuner.sh, pq_autoboot.sh, config files added
+[ ] sh -n passes on all changed shell scripts
+[ ] node --check passes on pq.js
+[ ] PQ backend rejects values 10, 12, 21 and unknown presets
+[ ] Read-only status does not write
+[ ] Readback verification of HAL after setting every value
+[ ] Natural/Balanced/Vivid/Custom saved profiles
+[ ] Reset 4/4/4 + Boosted + SF1.10 disables autoboot
+[ ] No gamma/globalpq commands in WebUI bridge
+[ ] Existing Java helper is copied if present; clean install is gated pending Termux helper
+[ ] No changes to zRAM, system.prop, post-fs-data.sh, FPSGo or OC logic
+
+[OK] Bundled zenku-pqctl.jar, dex + Reply type validated offline
+[OK] Installer uses embedded helper only, no external JAR required
+[OK] Root bridge prefers bundled JAR, old path is only optional fallback

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>ZENKU · PQ Color</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root{color-scheme:dark}.pq{max-width:590px;margin:auto;padding:19px 15px 110px;color:#eee;font:14px/1.48 system-ui, sans-serif;box-sizing:border-box}.pq *{box-sizing:border-box}
+.pq .eyebrow{font-size:10px;letter-spacing:2.2px;color:#ff5962;font-weight:800}.pq h1{font:750 27px/1.2 system-ui;color:#fafafa;margin:6px 0 7px;letter-spacing:-.5px}.pq h2{font:700 15px system-ui;color:#fff;margin:0 0 8px}.pq p{font-size:12px;color:#a9a9a9;margin:7px 0;line-height:1.6}.pq .card{background:#151515;border:1px solid #323232;border-radius:14px;padding:16px;margin:13px 0}.pq .topline{display:flex;justify-content:space-between;gap:10px;align-items:center}.pq .pill{font-size:11px;color:#ccc;background:#292929;padding:5px 8px;border-radius:20px;white-space:nowrap}.pq .pill.good{color:#9ce2ae;background:#183523}.pq .pill.warn{color:#ffcb83;background:#422c17}.pq .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.pq .stat{background:#232323;border-radius:8px;padding:10px;min-width:0}.pq .stat small{color:#b1b1b1;font-size:10px;display:block}.pq .stat strong{font-size:19px;color:#fff;font-variant-numeric:tabular-nums;display:block;margin-top:2px}.pq .presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.pq .preset{text-align:left;border:1px solid #404040;background:#202020;border-radius:10px;padding:12px 10px;color:#fff;cursor:pointer;min-height:74px}.pq .preset strong{display:block;font-size:14px}.pq .preset small{display:block;font-size:11px;color:#aaa;margin-top:5px}.pq .preset.on{border-color:#f45a62;background:#391c20}.pq .range{margin:18px 0 22px}.pq .rangehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.pq .range label{font-weight:650;color:#ddd}.pq .range output{font-size:23px;color:#fff;font-weight:750;font-variant-numeric:tabular-nums}.pq input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:5px;border-radius:6px;background:#494949;outline:none;margin:16px 0 8px;accent-color:#ed4852}.pq input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#ef4b55;border:3px solid #ffe6e6;box-shadow:0 0 0 3px rgba(239,75,85,.13)}.pq .bounds{display:flex;justify-content:space-between;color:#999;font-size:11px}.pq .notice{border-left:2px solid #b78843;padding:1px 0 1px 10px}.pq .fieldlabel{display:block;font-size:13px;font-weight:700;margin:14px 0 7px}.pq select{background:#202020;color:white;border:1px solid #444;border-radius:9px;padding:11px;width:100%;font:14px system-ui;min-height:44px}.pq .switch{display:flex;gap:10px;align-items:flex-start;margin-top:15px;font-size:13px;color:#eee}.pq .switch input{margin-top:3px;width:18px;height:18px;accent-color:#e64450;flex-shrink:0}.pq .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pq button.action{width:100%;border:1px solid #444;border-radius:10px;min-height:45px;padding:10px 8px;color:#fff;background:#262626;font:700 13px system-ui;cursor:pointer}.pq button.action.primary{background:#c92c37;border-color:#ec4c58}.pq button:disabled,.pq select:disabled,.pq input:disabled{opacity:.48;cursor:not-allowed}.pq .result{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.55 ui-monospace,monospace;background:#090909;border:1px solid #333;padding:10px;border-radius:9px;min-height:80px;max-height:260px;overflow:auto;color:#bfc5c9}.pq .hint{font-size:11px;color:#a6a6a6;margin:7px 0}.pq a.back{color:#ddd;text-decoration:none;font-weight:650;font-size:12px;display:inline-flex;margin-bottom:10px}.pq [hidden]{display:none!important}.pq .error{color:#ff9f9f}.pq .ok{color:#a6e5ba}
+</style>
+</head>
+<body>
+<main class="pq">
+<header><a class="back" href="visual.html">‹ Kembali ke Visual</a><div class="eyebrow">ZENKU R5.4.4 / MT6789 NATIVE</div><h1>PQ Color Control</h1><p>Kontras, saturasi, brightness vendor, Android Boosted, dan saturasi SurfaceFlinger dalam satu panel. Tidak menyentuh gamma atau Global PQ.</p></header>
+<section class="card">
+<div class="topline"><h2>Runtime PQ HAL</h2><span class="pill" id="health">Memeriksa...</span></div>
+<div class="grid"><div class="stat"><small>Kontras</small><strong id="live_contrast">—</strong></div><div class="stat"><small>Saturasi</small><strong id="live_saturation">—</strong></div><div class="stat"><small>Brightness PQ</small><strong id="live_brightness">—</strong></div></div>
+<p id="system-status">Mode dan SF dibaca dari sistem.</p><button class="action" id="refresh">Refresh status</button>
+<p class="hint">Nilai HAL di atas adalah pembacaan profil skenario 0. Faktor SF via binder tidak selalu tampil di `getprop`.</p>
+</section>
+<section class="card">
+<h2>Template profil</h2><p>Pilih template, lalu tekan <strong>Terapkan</strong>. Pemilihan template saja tidak mengubah layar.</p>
+<div class="presets">
+<button class="preset" data-profile="natural" type="button"><strong>Natural</strong><small>PQ 4/4/4 · Automatic · SF 1.00</small></button>
+<button class="preset" data-profile="balanced" type="button"><strong>Balanced</strong><small>PQ 5/5/4 · Boosted · SF 1.10</small></button>
+<button class="preset" data-profile="vivid" type="button"><strong>Vivid</strong><small>PQ 7/7/5 · Boosted · SF 1.15</small></button>
+<button class="preset" data-profile="custom" type="button"><strong>Custom tersimpan</strong><small>Setelan buatanmu sendiri</small></button>
+</div>
+<div class="topline"><h2>Level MediaTek PQ</h2><span class="pill warn">Batas keras: 9</span></div>
+<p class="notice">Semua slider vendor dibatasi 4–9. Angka di atas 9 ditolak oleh skrip walaupun diubah lewat developer tools. Gamma tidak diubah.</p>
+<div class="range"><div class="rangehead"><label for="contrast">Contrast</label><output id="v_contrast" for="contrast">4</output></div><input id="contrast" type="range" min="4" max="9" step="1" value="4"><div class="bounds"><span>4 · Awal</span><span>9 · Maksimal</span></div></div>
+<div class="range"><div class="rangehead"><label for="saturation">Saturation</label><output id="v_saturation" for="saturation">4</output></div><input id="saturation" type="range" min="4" max="9" step="1" value="4"><div class="bounds"><span>4 · Awal</span><span>9 · Maksimal</span></div></div>
+<div class="range"><div class="rangehead"><label for="brightness">Brightness PQ</label><output id="v_brightness" for="brightness">4</output></div><input id="brightness" type="range" min="4" max="9" step="1" value="4"><div class="bounds"><span>4 · Awal</span><span>9 · Maksimal</span></div></div>
+</section>
+<section class="card">
+<h2>Android &amp; SurfaceFlinger</h2>
+<label class="fieldlabel" for="mode">Android Color Mode</label>
+<select id="mode"><option value="boosted">Boosted (mode 1)</option><option value="automatic">Automatic (mode 3)</option></select>
+<label class="fieldlabel" for="sf">Saturasi SurfaceFlinger (faktor, bukan level PQ)</label>
+<select id="sf"><option value="1.00">1.00 · Netral</option><option value="1.05">1.05</option><option value="1.10">1.10 · Rekomendasi</option><option value="1.15">1.15</option><option value="1.20">1.20</option><option value="1.25">1.25 · Eksperimen</option><option value="1.30">1.30 · Eksperimen</option></select>
+<p>Mode Android diterapkan dahulu, lalu `SurfaceFlinger 1022`. Kedua nilai saturasi <strong>tidak dijumlahkan</strong>; transaksi SF bisa di-override Android.</p>
+<label class="switch"><input id="autoboot" type="checkbox"><span><strong>Terapkan ulang profil saat boot</strong><br><small>Opsional. Menunggu Android selesai boot sebelum menerapkan setelan yang tersimpan.</small></span></label>
+</section>
+<section class="card"><h2>Tindakan</h2><div class="actions"><button class="action primary" id="apply" disabled>Terapkan &amp; simpan</button><button class="action" id="restore" disabled>Reset ke baseline</button></div><p class="hint">Reset mengirim PQ 4/4/4, Boosted + SF 1.10 dan mematikan auto-boot; bukan reset kalibrasi pabrik. Snapshot dibuat sebelum apply.</p><p class="hint" id="selected-profile">Profil: —</p><div class="result" role="status" aria-live="polite" id="output">Mencari koneksi KernelSU WebUI...</div></section>
+</main>
+<footer class="footer-nav"><a href="index.html" class="nav-button"><img src="battery.svg" alt=""><span>Battery</span></a><a href="gpu.html" class="nav-button"><img src="gpu.svg" alt=""><span>GPU</span></a><a href="gpu_plus.html" class="nav-button"><img src="gpu-plus.svg" alt=""><span>GPU+</span></a><a href="visual.html" class="nav-button active"><img src="visual.svg" alt=""><span>Visual</span></a><a href="phase.html" class="nav-button"><img src="phase.svg" alt=""><span>Pacing</span></a></footer>
+<script src="pq.js?v=5.4.4"></script>
+</body>
+</html>

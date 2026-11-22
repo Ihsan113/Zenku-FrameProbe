@@ -1,0 +1,6 @@
+{
+  "natural":  {"contrast":4,"saturation":4,"brightness":4,"mode":"automatic","sf":"1.00"},
+  "balanced": {"contrast":5,"saturation":5,"brightness":4,"mode":"boosted","sf":"1.10"},
+  "vivid":    {"contrast":7,"saturation":7,"brightness":5,"mode":"boosted","sf":"1.15"},
+  "baseline": {"contrast":4,"saturation":4,"brightness":4,"mode":"boosted","sf":"1.10"}
+}

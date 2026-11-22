@@ -1,0 +1,13 @@
+service vendor.hwcomposer-2-3 /vendor/bin/hw/android.hardware.graphics.composer@2.3-service
+    interface android.hardware.graphics.composer@2.3::IComposer default
+    class hal animation
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE SYS_RESOURCE
+    task_profiles HighPerformance
+    writepid /dev/cpuset/foreground/tasks
+    onrestart restart surfaceflinger
+    priority -20
+    ioprio rt 0
+    rlimit rtprio 99 99
+    rlimit nice -20 -20

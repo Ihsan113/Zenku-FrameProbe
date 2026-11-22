@@ -1,0 +1,11 @@
+service gpu /system/bin/gpuservice
+    class core
+    user gpu_service
+    group graphics drmrpc
+    capabilities SYS_NICE SYS_RESOURCE
+    writepid /dev/stune/top-app/tasks
+    task_profiles MaxPerformance
+    ioprio rt 0
+    priority -20
+    rlimit rtprio 99 99
+    rlimit nice -20 -20
