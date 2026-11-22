@@ -15,6 +15,7 @@ set_perm "$MODPATH/service.sh" 0 0 0755
 ui_print "📝 Mengatur izin surfaceflinger_opt.sh..."
 set_perm "$MODPATH/surfaceflinger_opt.sh" 0 0 0755
 set_perm "$MODPATH/visual_tuner.sh" 0 0 0755
+set_perm "$MODPATH/renderer_capabilities.sh" 0 0 0755
 set_perm "$MODPATH/phase_tuner.sh" 0 0 0755
 set_perm "$MODPATH/post-fs-data.sh" 0 0 0755
 set_perm_recursive "$MODPATH/config" 0 0 0755 0644
