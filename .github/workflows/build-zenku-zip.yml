@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/zenku-package
-          tar --exclude='.git' --exclude='.github' -cf - . | tar -xf - -C /tmp/zenku-package
+          tar --exclude='.git' --exclude='.github' --exclude='*.zip' -cf - . | tar -xf - -C /tmp/zenku-package
           VERSION="$(sed -n 's/^version=//p' module.prop | head -n1)"
           ZIP_NAME="ZENKU_R5.4.9_VISUAL_PRESETS.zip"
           cd /tmp/zenku-package
