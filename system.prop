@@ -61,6 +61,8 @@ persist.sys.use_dithering=1
 # Legacy purgeable-assets request. Modern Android/app implementations may ignore it;
 # its presence does not guarantee reclaimed RAM or improved performance.
 persist.sys.purgeable_assets=1
+# Vendor GPUD shader precision request; effective only if the GPU driver consumes it.
+debug.gpu.force.highp=1
 
 # Preserve app-facing Realme identity intent; do not spoof the hardware board.
 ro.product.model=RMX5070
@@ -77,5 +79,5 @@ ro.product.brand=realme
 
 # R4: native GPUD AF 4x + trilinear is configured in post-fs-data.sh
 # only for MLBB and the analyzed libgpud build. No global override.
-# Native EGL/MSAA, RGBA8888 and Highp are OFF at boot; optional per-app WebUI experiments.
+# Native EGL/MSAA and RGBA8888 remain OFF at boot; Highp is explicitly requested above.
 # Vendor Vivid mode requested at boot on the verified PQ HAL. No visual cache.
