@@ -24,9 +24,11 @@ jobs:
           test -s customize.sh
           test -s post-fs-data.sh
           test -s system.prop
-          test -s tools/gpud-lab-v2/gpud_batch_v2.sh
-          test -s tools/gpud-lab-v2/gpud_probe.c
           test -s tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip
+          mkdir -p "$RUNNER_TEMP/gpud-lab-v2"
+          unzip -q tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip -d "$RUNNER_TEMP/gpud-lab-v2"
+          test -s "$RUNNER_TEMP/gpud-lab-v2/gpud_batch_v2.sh"
+          test -s "$RUNNER_TEMP/gpud-lab-v2/gpud_probe.c"
           bash -n customize.sh
           bash -n post-fs-data.sh
           bash -n service.sh
@@ -34,9 +36,8 @@ jobs:
           bash -n surfaceflinger_opt.sh
           bash -n visual_tuner.sh
           bash -n renderer_capabilities.sh
-          bash -n tools/gpud-lab-v2/gpud_batch_v2.sh
-          cc -std=c11 -O2 -Wall -Wextra -Werror -fsyntax-only tools/gpud-lab-v2/gpud_probe.c
-          unzip -t tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip
+          bash -n "$RUNNER_TEMP/gpud-lab-v2/gpud_batch_v2.sh"
+          cc -std=c11 -O2 -Wall -Wextra -Werror -fsyntax-only "$RUNNER_TEMP/gpud-lab-v2/gpud_probe.c"
           grep -q '^versionCode=22$' module.prop
           grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
           grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
