@@ -85,6 +85,12 @@ apply_prop persist.sys.overlay.devinputjack true
 # 1. Renderer: deliberately preserve the original Skia GL priority.
 apply_prop debug.hwui.renderer skiagl
 apply_prop debug.renderengine.backend skiaglthreaded
+# Google device configurations enable this Skia RenderThread task-splitting control.
+apply_prop renderthread.skia.reduceopstasksplitting true
+# Android 13 SurfaceFlinger reads this during startup. When supported blur layers
+# are rendered, CompositionEngine can request higher GPU clocks for that work.
+# It does not enable blur on builds that do not support background blur.
+apply_prop ro.sf.blurs_are_expensive 1
 
 # 2. ZENKU R5 PhaseOffset Engine (ROM baseline -> chosen manual profile).
 # Verified previous ZENKU reference applied early via resetprop -n successfully.
