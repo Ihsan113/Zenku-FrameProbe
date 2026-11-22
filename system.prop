@@ -53,6 +53,10 @@ persist.sys.overlay.devinputjack=true
 # Audio quality: service.sh may subsequently override this based on saved config.
 af.resampler.quality=4
 
+# Display-only dithering request. Not a GPU/performance boost; has an effect
+# only when the active framework/vendor display stack consumes this property.
+persist.sys.use_dithering=1
+
 # Preserve app-facing Realme identity intent; do not spoof the hardware board.
 ro.product.model=RMX5070
 ro.product.odm.model=RMX5070
