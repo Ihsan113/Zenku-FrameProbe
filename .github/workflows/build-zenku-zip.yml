@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ZIP_PATH="$RUNNER_TEMP/ZENKU_R5.4.15_GPUD_FILTER.zip"
+          ZIP_PATH="$RUNNER_TEMP/ZENKU_R5.4.15_VISUAL_FULL.zip"
           cd "$GITHUB_WORKSPACE"
           zip -qr "$ZIP_PATH" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
           unzip -t "$ZIP_PATH"
@@ -56,7 +56,7 @@ jobs:
           grep -q 'module.prop' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'visual_tuner.sh' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'webroot/visual.html' "$RUNNER_TEMP/zip-list.txt"
-          if tail -n +2 "$RUNNER_TEMP/zip-list.txt" | grep -Fq 'ZENKU_R5.4.15_GPUD_FILTER.zip'; then
+          if tail -n +2 "$RUNNER_TEMP/zip-list.txt" | grep -Fq 'ZENKU_R5.4.15_VISUAL_FULL.zip'; then
             echo "Output ZIP was accidentally included in itself."
             exit 1
           fi
@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ZENKU-R5.4.15-FULL-VISUAL
-          path: ${{ runner.temp }}/ZENKU_R5.4.15_GPUD_FILTER.zip
+          path: ${{ runner.temp }}/ZENKU_R5.4.15_VISUAL_FULL.zip
           if-no-files-found: error
           retention-days: 30
       - name: Upload standalone GPUD lab

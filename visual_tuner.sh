@@ -70,7 +70,7 @@ status() {
     fi
     printf 'af=%s\nfilter=%s\n' "$af" "$filter"
     [ "$enabled" = 1 ] && [ "$(prop "$G"force.rgb8888.enable)" = 1 ] && echo rgb=1 || echo rgb=0
-    [ "$enabled" = 1 ] && [ "$(prop "$G"egl.choose.config)" = 1 ] && echo native=1 || echo native=0
+    [ "$enabled" = 1 ] && [ "$(prop "$G"egl.choose.config)" = 1 ] && [ "$(prop "$G"egl.attr.sample.buffers)" = 1 ] && [ "$(prop "$G"egl.attr.samples)" = 4 ] && echo native=1 || echo native=0
     [ "$(prop debug.gpu.enable)" = 1 ] && [ "$(prop debug.gpu.force.highp)" = 1 ] && [ "$(prop debug.gpu.specify.app)" = "$(prop "$G"process.name)" ] && echo highp=1 || echo highp=0
     case "$(prop debug.egl.force_msaa)" in 1|true) echo aosp=1 ;; *) echo aosp=0 ;; esac
     printf 'pq=%s\n' "$(prop persist.vendor.sys.pq.picmode)"
