@@ -35,13 +35,19 @@ dalvik.vm.systemuicompilerfilter=speed
 dalvik.vm.dex2oat-resolve-startup-strings=true
 dalvik.vm.dex2oat-swap=true
 
-# Android 13 LMKD: use PSI/thrashing policy instead of legacy minfree-level kills.
-# These tune eligible-task selection, post-kill spacing and thrashing decay.
-# They do not change swap/zRAM size, OOM adjustment scores or CPU/GPU clocks.
+# ZENKU R5.4.10 GAME-FIRST RAM POLICY | Android 13 / MT6789
+# AOSP LMKD PSI strategy. Aggressive pressure response; foreground importance
+# is still governed by Android oom_score_adj / process state.
+# No ZRAM size, algorithm, swappiness, CPU/GPU clock or DVFSRC changes.
+ro.lmk.use_psi=true
 ro.lmk.use_minfree_levels=false
+ro.lmk.psi_partial_stall_ms=55
+ro.lmk.psi_complete_stall_ms=700
+ro.lmk.thrashing_limit=80
+ro.lmk.thrashing_limit_decay=50
+ro.lmk.swap_free_low_percentage=25
 ro.lmk.kill_heaviest_task=true
 ro.lmk.kill_timeout_ms=100
-ro.lmk.thrashing_limit_decay=50
 
 # GameManager: disable the framework default FPS override when this framework feature exists.
 # This does not unlock a game's own FPS cap or force a target refresh rate.
