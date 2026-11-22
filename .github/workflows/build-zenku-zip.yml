@@ -56,7 +56,7 @@ jobs:
           grep -q 'module.prop' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'visual_tuner.sh' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'webroot/visual.html' "$RUNNER_TEMP/zip-list.txt"
-          if grep -q 'ZENKU_R5.4.14_GPUD_FILTER.zip' "$RUNNER_TEMP/zip-list.txt"; then
+          if tail -n +2 "$RUNNER_TEMP/zip-list.txt" | grep -Fq 'ZENKU_R5.4.14_GPUD_FILTER.zip'; then
             echo "Output ZIP was accidentally included in itself."
             exit 1
           fi
