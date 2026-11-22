@@ -1,4 +1,4 @@
-name: Build ZENKU Magisk ZIP R5.4.14 GPUD FILTER
+name: Build ZENKU Magisk ZIP R5.4.15 FULL VISUAL
 
 on:
   push:
@@ -39,16 +39,16 @@ jobs:
           bash -n renderer_capabilities.sh
           bash -n "$RUNNER_TEMP/gpud-lab-v2/gpud_batch_v2.sh"
           cc -std=c11 -O2 -Wall -Wextra -Werror -fsyntax-only "$RUNNER_TEMP/gpud-lab-v2/gpud_probe.c"
-          grep -q '^versionCode=23$' module.prop
-          grep -q '^debug.egl.force_msaa=false$' system.prop
-          grep -q '^debug.gpu.force.highp=0$' system.prop
+          grep -q '^versionCode=24$' module.prop
+          grep -q '^debug.egl.force_msaa=true$' system.prop
+          grep -q '^debug.gpu.force.highp=1$' system.prop
           grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
           grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
       - name: Build flashable ZIP outside workspace
         shell: bash
         run: |
           set -euo pipefail
-          ZIP_PATH="$RUNNER_TEMP/ZENKU_R5.4.14_GPUD_FILTER.zip"
+          ZIP_PATH="$RUNNER_TEMP/ZENKU_R5.4.15_GPUD_FILTER.zip"
           cd "$GITHUB_WORKSPACE"
           zip -qr "$ZIP_PATH" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
           unzip -t "$ZIP_PATH"
@@ -56,7 +56,7 @@ jobs:
           grep -q 'module.prop' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'visual_tuner.sh' "$RUNNER_TEMP/zip-list.txt"
           grep -q 'webroot/visual.html' "$RUNNER_TEMP/zip-list.txt"
-          if tail -n +2 "$RUNNER_TEMP/zip-list.txt" | grep -Fq 'ZENKU_R5.4.14_GPUD_FILTER.zip'; then
+          if tail -n +2 "$RUNNER_TEMP/zip-list.txt" | grep -Fq 'ZENKU_R5.4.15_GPUD_FILTER.zip'; then
             echo "Output ZIP was accidentally included in itself."
             exit 1
           fi
@@ -64,8 +64,8 @@ jobs:
       - name: Upload flashable ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: ZENKU-R5.4.14-GPUD-FILTER
-          path: ${{ runner.temp }}/ZENKU_R5.4.14_GPUD_FILTER.zip
+          name: ZENKU-R5.4.15-FULL-VISUAL
+          path: ${{ runner.temp }}/ZENKU_R5.4.15_GPUD_FILTER.zip
           if-no-files-found: error
           retention-days: 30
       - name: Upload standalone GPUD lab

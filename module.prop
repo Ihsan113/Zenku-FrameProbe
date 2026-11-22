@@ -1,8 +1,8 @@
 id=mtk_idle_charging_magisk
 name=MTK Idle Charging Control (Magisk)
-version=v1.8.8-oc-ZENKU-R5.4.14-GPUD-FILTER
-versionCode=23
+version=v1.8.9-oc-ZENKU-R5.4.15-VISUAL-FULL
+versionCode=24
 author=Sanz
-description=ZENKU R5.4.14: GPUD AF4/16 and GL texture filter presets; Highp/global EGL MSAA requests disabled; retains R5.4.13 moderate LMKD/GameManager policy, R5.4.12 RenderThread and SurfaceFlinger hints, R5.4.6 CPUSET fix, GPU renderer API panel, dynamic app picker, PQ WebRoot (MT6789), SF phase engine, GPU/FPSGo and idle charging. No claim of game asset streaming or shader-cache precompile.
+description=ZENKU R5.4.15: restores full Visual controls (AF Native/2/4/8/16, filter modes, RGBA/EGL MSAA/Highp experiments and global AOSP MSAA) on R5.4.14 base; retains R5.4.13 LMKD/GameManager, R5.4.12 RenderThread/SF hints, R5.4.6 CPUSET, PQ WebRoot, GPU/FPSGo and idle charging.
 banner=https://i.ibb.co.com/67z2NZFd/assets-task-01k67ztta7emetjc9pdpyy8t9y-1759057438-img-1.webp
 minMagisk=20400

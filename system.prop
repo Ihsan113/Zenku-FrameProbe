@@ -25,8 +25,9 @@ debug.hwui.use_hint_manager=true
 debug.hwui.target_cpu_time_percent=65
 debug.hwui.skia_atrace_enabled=false
 
-# Do not force global EGL MSAA: game window EGL behavior was not validated.
-debug.egl.force_msaa=false
+# Global EGL MSAA 4x request retained from the previous Visual version.
+# Actual effect depends on the EGL config selected by the application.
+debug.egl.force_msaa=true
 
 # ART / app responsiveness (AOSP 13; rock device tree uses speed-profile).
 # Enable normal JIT and profiles, compile hot app paths during install/idle jobs.
@@ -72,8 +73,8 @@ persist.sys.use_dithering=1
 # Legacy purgeable-assets request. Modern Android/app implementations may ignore it;
 # its presence does not guarantee reclaimed RAM or improved performance.
 persist.sys.purgeable_assets=1
-# Highp promotion was not demonstrated in the render probe; leave the request OFF.
-debug.gpu.force.highp=0
+# Retain the previous vendor Highp request; effectiveness remains driver/game dependent.
+debug.gpu.force.highp=1
 
 # Preserve app-facing Realme identity intent; do not spoof the hardware board.
 ro.product.model=RMX5070
@@ -90,5 +91,5 @@ ro.product.brand=realme
 
 # R4: native GPUD AF 4x + trilinear is configured in post-fs-data.sh
 # only for MLBB and the analyzed libgpud build. No global override.
-# Native EGL/MSAA, RGBA8888, and Highp remain OFF at boot; GPUD defaults to AF 4x + Trilinear.
+# Global EGL MSAA and the previous Highp request remain enabled; GPUD defaults to AF 4x + Trilinear.
 # Vendor Vivid mode requested at boot on the verified PQ HAL. No visual cache.

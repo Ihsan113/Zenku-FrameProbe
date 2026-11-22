@@ -399,8 +399,7 @@ configure_gpud() {
     # prerequisite and property has passed readback. Keep experimental hooks OFF.
     apply_prop vendor.debug.gpud.enable 0 || return 1
     apply_prop debug.gpu.enable 0 || return 1
-    apply_prop debug.egl.force_msaa false || return 1
-    apply_prop debug.gpu.force.highp 0 || return 1
+    apply_prop debug.gpu.force.highp 1 || return 1
     apply_prop vendor.debug.gpud.process.name "$GPUD_TARGET_PACKAGE" || return 1
     apply_prop vendor.debug.gpud.log 0 || return 1
     apply_prop vendor.debug.gpud.force.rgb8888.enable 0 || return 1

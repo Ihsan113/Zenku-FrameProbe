@@ -80,7 +80,7 @@ set_perm "$MODPATH/bin/zenku-pqctl.jar" 0 0 0644
 ui_print "PQ Color: HIDL helper v0.2 included (self-contained; no Termux dependency)."
 ui_print "PQ Color: WebRoot page ready, PQ level range 4..9, autoboot OFF by default."
 
-ui_print "ZENKU R5.4.14: GPUD AF 4x/16x dan Trilinear/MAG filters; Highp dan EGL MSAA global OFF."
+ui_print "ZENKU R5.4.15: Full Visual controls restored — AF Native/2/4/8/16, RGBA, Mali MSAA, Highp, AOSP MSAA."
 ui_print "Profil ROM untuk rollback tersedia melalui tab Pacing."
 ui_print "🎉 Instalasi selesai!"
 ui_print "📦 Modul *mtk_idle_charging_magisk* siap digunakan!"
