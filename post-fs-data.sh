@@ -62,16 +62,20 @@ if ! command -v resetprop >/dev/null 2>&1; then
     exit 0
 fi
 
-# LMKD modern memory-pressure policy (Android 13).
-# The module's system.prop also declares these values; apply/read back here
-# through resetprop before framework startup, matching the existing boot policy.
-# kill_timeout_ms spaces consecutive kills; thrashing_limit_decay controls
-# how far the threshold decays after the system fails to recover. No zRAM/swap
-# configuration, oom_score_adj policy, CPU/GPU clock or thermal limit is changed.
+# ZENKU R5.4.10 GAME-FIRST RAM POLICY | Android 13 / MT6789.
+# AOSP LMKD PSI knobs, applied before framework startup and read back.
+# More sensitive partial-stall / page-cache thrashing thresholds can trigger
+# earlier background-process cleanup under pressure; they do not reserve RAM.
+# No ZRAM size/algorithm, swappiness, VM sysctls, DVFSRC, clocks or thermal writes.
+apply_prop ro.lmk.use_psi true
 apply_prop ro.lmk.use_minfree_levels false
+apply_prop ro.lmk.psi_partial_stall_ms 55
+apply_prop ro.lmk.psi_complete_stall_ms 700
+apply_prop ro.lmk.thrashing_limit 80
+apply_prop ro.lmk.thrashing_limit_decay 50
+apply_prop ro.lmk.swap_free_low_percentage 25
 apply_prop ro.lmk.kill_heaviest_task true
 apply_prop ro.lmk.kill_timeout_ms 100
-apply_prop ro.lmk.thrashing_limit_decay 50
 
 # GameManager reads this when a game UID enters foreground on frameworks that
 # implement the default-game-frame-rate override feature. Inert on frameworks
