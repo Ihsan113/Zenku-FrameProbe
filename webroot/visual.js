@@ -90,7 +90,7 @@
         buttons();
         log('info','Preset dipilih: '+name.toUpperCase()+' (belum diterapkan).');
     }
-\n    function advanced(){return ['rgb','native','highp'].some(id=>$(id).checked);}
+    function advanced(){return ['rgb','native','highp'].some(id=>$(id).checked);}
     function buttons() {
         const lock=state.busy||!state.compatible;
         $('profile').disabled=lock;$('advanced').disabled=lock;
