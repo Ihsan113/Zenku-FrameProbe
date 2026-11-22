@@ -44,6 +44,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ZENKU-R5.4.9-VISUAL-PRESETS
-          path: ZENKU_R5.4.8_GPU_RENDERER_API.zip
+          path: ZENKU_R5.4.9_VISUAL_PRESETS.zip
           if-no-files-found: error
           retention-days: 14
