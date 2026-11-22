@@ -44,32 +44,34 @@ jobs:
           grep -q '^debug.gpu.force.highp=0$' system.prop
           grep -q '^ro.lmk.psi_partial_stall_ms=70$' system.prop
           grep -q '^ro.lmk.swap_free_low_percentage=20$' system.prop
-      - name: Build flashable ZIP
+      - name: Build flashable ZIP outside workspace
         shell: bash
         run: |
           set -euo pipefail
-          ZIP_NAME=ZENKU_R5.4.14_GPUD_FILTER.zip
-          zip -qr "$ZIP_NAME" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
-          unzip -t "$ZIP_NAME"
-          sha256sum "$ZIP_NAME"
+          ZIP_PATH="$RUNNER_TEMP/ZENKU_R5.4.14_GPUD_FILTER.zip"
+          cd "$GITHUB_WORKSPACE"
+          zip -qr "$ZIP_PATH" . -x '.git/*' '.github/*' 'tools/*' 'tools/**' '*.zip'
+          unzip -t "$ZIP_PATH"
+          unzip -l "$ZIP_PATH" > "$RUNNER_TEMP/zip-list.txt"
+          grep -q 'module.prop' "$RUNNER_TEMP/zip-list.txt"
+          grep -q 'visual_tuner.sh' "$RUNNER_TEMP/zip-list.txt"
+          grep -q 'webroot/visual.html' "$RUNNER_TEMP/zip-list.txt"
+          if grep -q 'ZENKU_R5.4.14_GPUD_FILTER.zip' "$RUNNER_TEMP/zip-list.txt"; then
+            echo "Output ZIP was accidentally included in itself."
+            exit 1
+          fi
+          sha256sum "$ZIP_PATH"
       - name: Upload flashable ZIP
         uses: actions/upload-artifact@v4
         with:
           name: ZENKU-R5.4.14-GPUD-FILTER
-          path: ZENKU_R5.4.14_GPUD_FILTER.zip
+          path: ${{ runner.temp }}/ZENKU_R5.4.14_GPUD_FILTER.zip
           if-no-files-found: error
           retention-days: 30
-      - name: Stage standalone GPUD lab ZIP
-        shell: bash
-        run: |
-          set -euo pipefail
-          cp tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip .
-          unzip -t ZENKU_GPUD_BATCH_LAB_V2.zip
-          sha256sum ZENKU_GPUD_BATCH_LAB_V2.zip
       - name: Upload standalone GPUD lab
         uses: actions/upload-artifact@v4
         with:
           name: ZENKU-GPUD-BATCH-LAB-V2
-          path: ZENKU_GPUD_BATCH_LAB_V2.zip
+          path: tools/gpud-lab-v2/ZENKU_GPUD_BATCH_LAB_V2.zip
           if-no-files-found: error
           retention-days: 30
