@@ -71,7 +71,26 @@
         if(r.code!==0) throw new Error(r.stderr.trim()||r.stdout.trim().split('\n').slice(-3).join('; ')||'Shell gagal: '+r.code);
         return r.stdout;
     }
-    function advanced(){return ['rgb','native','highp'].some(id=>$(id).checked);}
+
+    function selectPreset(name) {
+        const presets = {
+            aaa: {af:'16.0',tri:true,aosp:true,rgb:true,native:true,highp:true,
+                summary:'AAA++: AF 16×, Trilinear ON, AOSP MSAA ON, RGBA8888 ON, Native Mali MSAA ON, Highp FP32 ON. Semua eksperimen aktif; risiko crash, panas, konsumsi daya, artefak, atau ketidakcocokan meningkat.'},
+            performance: {af:'off',tri:false,aosp:false,rgb:false,native:false,highp:false,
+                summary:'Performance: AF Native, Trilinear OFF, AOSP MSAA OFF, seluruh eksperimen OFF. Mengurangi beban/override visual; hasil FPS tetap bergantung game, suhu, CPU/GPU, dan frame pacing.'},
+            balance: {af:'4.0',tri:true,aosp:false,rgb:false,native:false,highp:false,
+                summary:'Balance: AF 4×, Trilinear ON, MSAA OFF, seluruh eksperimen OFF. Kompromi kualitas tekstur dan beban; titik awal yang disarankan.'}
+        };
+        const p=presets[name]; if(!p)return;
+        selectAf(p.af);
+        $('tri').checked=p.tri;$('aosp').checked=p.aosp;
+        $('rgb').checked=p.rgb;$('native').checked=p.native;$('highp').checked=p.highp;
+        $('consent').checked=false;
+        $('preset-summary').textContent=p.summary+' Tekan Terapkan untuk menjalankan preset.';
+        buttons();
+        log('info','Preset dipilih: '+name.toUpperCase()+' (belum diterapkan).');
+    }
+\n    function advanced(){return ['rgb','native','highp'].some(id=>$(id).checked);}
     function buttons() {
         const lock=state.busy||!state.compatible;
         $('profile').disabled=lock;$('advanced').disabled=lock;
@@ -140,6 +159,9 @@
     loadVisualApps();
     $('visual-refresh-apps').addEventListener('click',()=>loadVisualApps());
     $('refresh').addEventListener('click',()=>run(['status']));
+    $('preset-aaa').addEventListener('click',()=>selectPreset('aaa'));
+    $('preset-performance').addEventListener('click',()=>selectPreset('performance'));
+    $('preset-balance').addEventListener('click',()=>selectPreset('balance'));
     $('defaults').addEventListener('click',()=>{if(Array.from($('target').options).some(o=>o.value==='com.mobile.legends'))$('target').value='com.mobile.legends';visualPicker?.refresh();selectAf('4.0');$('tri').checked=true;$('aosp').checked=true;for(const id of ['rgb','native','highp'])$(id).checked=false;$('consent').checked=false;buttons();message('Default R4 diisi. Tekan Terapkan.');log('info','Default dipilih (belum diterapkan).');});
     for(const id of ['rgb','native','highp'])$(id).addEventListener('change',()=>{$('consent').checked=false;buttons();});
     $('apply').addEventListener('click',()=>{
