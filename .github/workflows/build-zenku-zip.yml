@@ -1,9 +1,9 @@
-name: Build ZENKU Magisk ZIP R5.4.10 RAM GAME-FIRST
+name: Build ZENKU Magisk ZIP R5.4.11 RAM MODERATE
 
 on:
   push:
     branches:
-      - feature/gpu-renderer-capability-panel
+      - main
 
 jobs:
   package:
@@ -35,7 +35,7 @@ jobs:
           mkdir -p /tmp/zenku-package
           tar --exclude='.git' --exclude='.github' --exclude='*.zip' -cf - . | tar -xf - -C /tmp/zenku-package
           VERSION="$(sed -n 's/^version=//p' module.prop | head -n1)"
-          ZIP_NAME="ZENKU_R5.4.10_RAM_GAME_FIRST.zip"
+          ZIP_NAME="ZENKU_R5.4.11_RAM_MODERATE.zip"
           cd /tmp/zenku-package
           zip -qr "$GITHUB_WORKSPACE/$ZIP_NAME" .
           unzip -t "$GITHUB_WORKSPACE/$ZIP_NAME"
@@ -43,7 +43,7 @@ jobs:
       - name: Upload ZIP artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ZENKU-R5.4.10-RAM-GAME-FIRST
+          name: ZENKU-R5.4.11-RAM-MODERATE
           path: ZENKU_R5.4.10_RAM_GAME_FIRST.zip
           if-no-files-found: error
           retention-days: 14
